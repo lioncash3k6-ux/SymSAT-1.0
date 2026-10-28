@@ -1182,7 +1182,7 @@ Lean, clones the public repo and the catalogue repo, builds, starts `unit-lean-s
 with the checker for toolchain-free x86-64 boxes, and `monster merge-shards --out DIR SHARD...` to merge the shards'
 `verified.jsonl` and record files. The private repo `SymSAT` stays the working repo (full history, chats, snapshots).
 
-### 2026-10-28 ~13:40: where a Lean lemma check really spends its time, and −34% from four allocation cuts
+### 2026-10-28 ~13:10: where a Lean lemma check really spends its time, and −34% from four allocation cuts
 Method: `scripts/bench_checker.sh BIN PROOF RUNS` (min user CPU over runs; wall time on this loaded box varies ±25%,
 the min of user time ±8%), ablation binaries, and `perf` (run as root). 20 MB d=10 unit proof (113k steps):
 
@@ -1209,4 +1209,4 @@ Findings (perf, min-of-4 benches):
 - Tried and rejected with the harness: scalar literal codes instead of `Option Bool` (check part 2.71 vs 2.34 s).
 Axioms of `check_sound`, `getC_eq_getCFast`, `rup_eq_rupFast`, `stageRefuted_of_verified`: the standard three; 39 + 6
 tests and the 20 lift mutants pass. On the 332 MB unit (0,3459): 27.7 s user (59 s wall this morning). The running d=10
-stage was switched to this checker at 13:45. Lean is now ~0.4x the solve CPU per hard d=10 unit.
+stage was switched to this checker at 13:10. Lean is now ~0.4x the solve CPU per hard d=10 unit.

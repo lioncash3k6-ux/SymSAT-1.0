@@ -236,7 +236,7 @@ assembler accepts several `record` lines per stage (one record file per Lean bat
 `rup` note (2026-10-28): the compiled checker runs `rupFast` (array assignment, Rup.lean) in place of `rup` through the
 proved `@[csimp]` equality `rup_eq_rupFast`; the kernel checks that equality, so nothing is trusted about the
 replacement (unlike `implemented_by`). Same for `sig` / `sigImpl` (Image.lean).
-Executable-only changes of 2026-10-28 ~13:40 (statements untouched, see RESULTS "~13:40"): `OKSt` carries the edge
+Executable-only changes of 2026-10-28 ~13:10 (statements untouched, see RESULTS "~13:10"): `OKSt` carries the edge
 table with `hE : E = edgeTable n` (the invariant is still stated over `edgeTable n`); `getCFast` replaces `getC` through
 the proved `@[csimp] getC_eq_getCFast`; `rupFast` is justified by `rupA_rep` (any array that represents the assignment
 list gives the same answer) and `rep_toArr`; the proof text is read by `LineReader` / `parseLineBytes` (untrusted I/O and

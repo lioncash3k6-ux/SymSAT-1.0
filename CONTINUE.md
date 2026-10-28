@@ -147,10 +147,10 @@ restart this box's stage with its own `--shard 0/N` (units already in its verifi
 without `context/`; `scripts/release.sh` re-publishes it). `monster bootstrap` / `scripts/bootstrap.sh` clone the public repo
 (no credentials needed on worker machines); `monster merge-shards --out DIR SHARD...` merges shard outputs. Scalar literal
 status in the checker: tried, slower, reverted (RESULTS "~12:55").
-**13:45: checker −34% more** (RESULTS "~13:40"): the lemma check cost was NOT hint evaluation (0.5 s of 2.95) but a
+**13:10: checker −34% more** (RESULTS "~13:10"): the lemma check cost was NOT hint evaluation (0.5 s of 2.95) but a
 per-step rebuild of the edge table (0.9 s, fixed in Stream.lean) and allocation churn (chunked byte reader, `getCFast`,
 preallocated assignment). 20 MB proof: 2.95 → 1.95 s; this morning 6.15 s. Harness: `scripts/bench_checker.sh`; profile with
-`sudo perf record` (works without sysctl). The d=10 stage runs this checker since 13:45. Idea "packed clause store" is
+`sudo perf record` (works without sysctl). The d=10 stage runs this checker since 13:10. Idea "packed clause store" is
 CLOSED: measured not the lever.
 **Then:** d=12 Lean stage (`--d 12 --gray-a 6 --gray-b 8`, ~37,034 units; after d=10 on this box, or now on another
 machine from the bundle: the stage driver needs the checker binary too, add `verified/.lake/build/bin/checker` to the
