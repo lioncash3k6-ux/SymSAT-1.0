@@ -20,11 +20,13 @@ mod flag;
 mod full;
 mod pattern;
 mod glue;
+mod interval;
 mod graph;
 mod leanstage;
 mod leanunit;
 mod srgen;
 mod lift;
+mod mrcover;
 mod sat;
 mod sha256;
 mod sys;
@@ -1386,6 +1388,65 @@ fn main() {
         Some("unit-lean") => cmd_unit_lean(&a),
         Some("unit-lean-stage") => cmd_unit_lean_stage(&a),
         Some("assemble-spec") => cmd_assemble_spec(&a),
+        Some("mr-glue") => {
+            // interval gluing measurement on sampled (G', H) pairs of the vertex-deletion covers (src/interval.rs)
+            let cfg = config_from(&a);
+            let d: usize = a.get("d", 10usize);
+            let m = cfg.n - 1 - d;
+            let la = catalog::load(&cfg.catalogs, cfg.s - 1, cfg.t, d).unwrap_or_else(|e| die(&e));
+            let lb = catalog::load(&cfg.catalogs, cfg.s, cfg.t - 1, m).unwrap_or_else(|e| die(&e));
+            let dir = a.kv.get("covers").map(PathBuf::from).unwrap_or_else(|| PathBuf::from("results/covers_mr"));
+            let ca = cover::Cover::load(&dir.join(format!("c{}{}_{d}_g{}.txt", cfg.s - 1, cfg.t, d - 1)), &la.graphs).unwrap_or_else(|e| die(&e));
+            let k: usize = a.get("sample", 8usize);
+            let seed: u64 = a.get("seed", 1u64);
+            let mut rng = seed;
+            let mut tot = 0f64;
+            for _ in 0..k {
+                rng = rng.wrapping_mul(6364136223846793005).wrapping_add(1442695040888963407);
+                let ga = (rng >> 33) as usize % ca.gens.len();
+                rng = rng.wrapping_mul(6364136223846793005).wrapping_add(1442695040888963407);
+                let hb = (rng >> 33) as usize % lb.graphs.len();
+                // G' = the base without its last (gray) vertex
+                let base = &ca.gens[ga].base;
+                let mut gp = graph::Graph::empty(base.n - 1);
+                for u in 0..base.n - 1 { for v in u + 1..base.n - 1 { if base.has_edge(u, v) { gp.add_edge(u, v); } } }
+                // vertex order of G' (MONSTER_MR_ORDER = canon | dense | sparse): the order the DFS adds vertices in
+                let order = std::env::var("MONSTER_MR_ORDER").unwrap_or_default();
+                if order == "dense" || order == "sparse" {
+                    let mut vs: Vec<usize> = (0..gp.n).collect();
+                    let deg = |v: usize| (gp.adj[v] & ((1u32 << gp.n) - 1)).count_ones();
+                    // greedy: next vertex = the one with most (dense) / fewest (sparse) edges to the already placed ones, ties by degree
+                    let mut placed: Vec<usize> = Vec::new();
+                    while placed.len() < gp.n {
+                        let best = vs.iter().copied().filter(|v| !placed.contains(v)).max_by_key(|&v| {
+                            let to_placed = placed.iter().filter(|&&p| gp.has_edge(p, v)).count() as i64;
+                            let key = to_placed * 100 + deg(v) as i64;
+                            if order == "dense" { key } else { -key }
+                        }).unwrap();
+                        placed.push(best);
+                    }
+                    vs = placed;
+                    let lab: Vec<u8> = vs.iter().map(|&v| v as u8).collect();
+                    gp = canon::relabel(&gp, &lab);
+                }
+                let t0 = std::time::Instant::now();
+                let st = interval::glue(&gp, &lb.graphs[hb], true);
+                let secs = t0.elapsed().as_secs_f64();
+                tot += secs;
+                println!("mr-glue (G' gen {ga}, H {hb}): {} nodes{}, {} (4,5,24)-solutions, {} extensions, {:.3} s; intervals {}; tried/alive per level {:?}", st.nodes, if st.capped { " (CAPPED)" } else { "" }, st.solutions, st.extensions, secs, interval::h_tables(&lb.graphs[hb]).intervals.len(), (0..=gp.n).map(|l| format!("{}/{}", st.tried[l], st.alive[l])).collect::<Vec<_>>());
+            }
+            println!("mean {:.3} s per (G', H) pair; x {} gens x {} H = {:.0} CPU-h for d={d}", tot / k as f64, ca.gens.len(), lb.graphs.len(), tot / k as f64 * (ca.gens.len() * lb.graphs.len()) as f64 / 3600.0);
+        }
+        Some("cover-mr") => {
+            // McKay-Radziszowski-style covers (src/mrcover.rs): A = (s-1,t,d-1)-graph + free vertex, B = itself
+            let cfg = config_from(&a);
+            let d: usize = a.get("d", 10usize);
+            let m = cfg.n - 1 - d;
+            let la = catalog::load(&cfg.catalogs, cfg.s - 1, cfg.t, d).unwrap_or_else(|e| die(&e));
+            let lb = catalog::load(&cfg.catalogs, cfg.s, cfg.t - 1, m).unwrap_or_else(|e| die(&e));
+            let out = a.kv.get("out").map(PathBuf::from).unwrap_or_else(|| PathBuf::from("results/covers_mr"));
+            mrcover::write(&la, &lb, cfg.s, cfg.t, d, &out).unwrap_or_else(|e| die(&e));
+        }
         Some("count-kill") => {
             // counting-only refutation census of a stage (src/count.rs); no proofs, a measurement
             let cfg = config_from(&a);

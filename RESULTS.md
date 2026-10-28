@@ -1270,3 +1270,34 @@ suite and identical conflict counts on plain formulas; neutral in time) and the 
 Also already closed yesterday for the same question (RESULTS 2026-10-27 ~11:40): symmetry inside units (group orders
 almost all 1 after the covers). After counting (0 kills) and bicliques (slower), no order of magnitude is left at the
 unit-solving level on this solver; what remains verifiable and real is machines.
+- **Paired 16-unit verdict for the biclique reencoding** (`bench/ab.jsonl`, 16:05): seconds ratio **2.53** (CI 2.10-3.31),
+  conflicts ratio 0.94 (CI 0.81-1.17), verdicts agree; extrapolated d=10: 6,108 vs 2,415 CPU-h. Closed.
+
+### 2026-10-28 ~16:30: the 1995 interval gluing (DPLL with set propagation), rebuilt and measured per pair
+Source: McKay–Radziszowski, "R(4,5) = 25" (users.cecs.anu.edu.au/~bdm/papers/r45.pdf), §2-4: vertex-deletion
+decomposition (Table 2: 53 sparse (3,5,9)-graphs against R(4,4,14) for degree 10), feasible cones, intervals [B,T] of
+cones, collapsing rules (a)-(d) with the set functions H1/H2/H3, DFS over G's vertices with an interval partition of the
+feasible cones (~100-140 intervals per H), interval splitting at the end, the one-vertex extension by intervals over
+triangles and independent 4-sets, the double tree (adjunct lookahead + sharing across the family) and low-order
+symmetries (2-3x). Their total: 3.2 and 6 CPU-years on 12-MIPS Sparcstations; the 2024 HOL4 proof (Gauthier–Brown,
+arXiv:2404.01761) used direct gluing with covers and MiniSat, < 950 CPU-days.
+Built here (uncertified measurement tools): `monster cover-mr --d D` (src/mrcover.rs: the vertex-deletion cover,
+52 generalisations for d=10, verified by `Cover::load`) and `monster mr-glue --d 10 --sample K` (src/interval.rs: cones,
+H1/H2/H3 tables over all 2^14 subsets, the four collapsing rules, interval partition, DFS, splitting, extension;
+`MONSTER_MR_CAP` node cap, `MONSTER_MR_ORDER=dense|sparse` vertex orders). Measured, d=10, (G', H) pairs sampled with seed 1:
+
+| what | result |
+|---|---|
+| vertex-deletion cover as CDCL units (`glue --covers results/covers_mr --gray-a 9 --gray-b 0`) | 43-54 s per unit, 6.8 M units: ~94,000 CPU-h (15x worse than the current 6,000) |
+| interval DFS per pair, no lookahead, no sharing | 0.16 µs per node, but 1-2 x 10^8 nodes per pair (capped at 2 x 10^8 on 5 of 8): 23-36 s per pair, ~50,000 CPU-h (8x worse) |
+| vertex orders dense-first / sparse-first | same picture (29 s / 23 s mean, capped) |
+| tried/alive per level (typical) | level 3: 17 M / 0.5 M, level 4: 60 M / 0.6 M: ~100 candidates tried per surviving node |
+
+Reading: per node the set propagation is ~500x cheaper than a CDCL conflict (0.16 µs vs ~90 µs), but without learning the
+tree has ~10^8 nodes per pair against ~7 x 10^5 conflicts for the same pair in CDCL. The paper's remaining machinery
+(adjunct lookahead ~30x on tried nodes, double-tree sharing across the 53 G's ~5-10x, symmetries 2-3x) would plausibly
+bring it to the 0.1-0.3 s per pair that their 1995 CPU figures imply, i.e. 1,000-2,500 CPU-h for d=10: **2-5x better than
+CDCL, not 50x**, consistent with the HOL4 team's choice of MiniSat. Proof side if pursued: a DPLL tree is a tree
+resolution; with reasons recorded per propagated literal every leaf is a RUP step and every internal node a 2-hint
+resolution, checkable by the existing checker without Lean changes. Cost to find out: the double tree and lookahead,
+~1-2 weeks of Rust, then proof logging. Not started; the tools and numbers stay.

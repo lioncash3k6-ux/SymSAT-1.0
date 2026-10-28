@@ -173,6 +173,19 @@ plain formulas unchanged: identical conflicts, neutral time; 39 + 6 tests pass);
 **15:20: biclique route CLOSED** (RESULTS "~15:20"): all variants slower; the Lean definition-variable extension was designed,
 not built; `Watch.bin` binary fast path kept (neutral, tested). Counting, symmetry inside units and bicliques are now all
 measured dead at the unit level; the remaining real lever is machines.
+**15:50: the 1995 decomposition, under measurement** (user: "discover what's left"): McKay–Radziszowski did NOT glue full
+(3,5,d) graphs; they deleted one vertex of the neighbourhood and glued a small sparse family (53 (3,5,9)-graphs for d=10)
+against every (4,4,14)-graph (r45.pdf §2-3; 3.2 CPU-years on 12-MIPS Sparcstations ≈ CPU-days today; the 2024 HOL4 proof
+went back to direct gluing with covers and needed <950 CPU-days, our regime). In our framework that is just another cover:
+`monster cover-mr --d D --out results/covers_mr` (src/mrcover.rs) writes A = "(3,5,d-1)-graph + one all-gray vertex" (greedy
+hitting family, 52 gens for d=10, 32 for d=8) and B = every catalogue graph itself (g0); both verified by `Cover::load`. No Lean
+change: gray edges are already free in the bridge. Running: `symsat-mr-d8` (all 64 units, certified, `results/ab/mr_d8`) against
+the current d=8 stage's 1,057 solve CPU-s, and `symsat-mr-d10-sample` (16 of 6,802,432 units, `results/ab/mr_d10_sample`).
+**16:30: 1995 interval gluing rebuilt and measured** (user: "push in the DPLL direction"): the vertex-deletion cover is 15x
+worse as CDCL units; the interval DFS per pair (src/interval.rs, `monster mr-glue`) is 8x worse than CDCL (10^8 nodes at
+0.16 µs; no learning); the paper's double tree + lookahead + symmetries would plausibly give 2-5x, weeks of work, proofs as
+tree resolution. Biclique paired verdict: 2.53x slower. Everything measured today is in RESULTS "~14:40", "~15:20", "~16:30".
+The production run `symsat-d10-lean` kept going throughout.
 **Then:** d=12 Lean stage (`--d 12 --gray-a 6 --gray-b 8`, ~37,034 units; after d=10 on this box, or now on another
 machine from the bundle: the stage driver needs the checker binary too, add `verified/.lake/build/bin/checker` to the
 bundle); final assembly: three `assemble-spec` blocks (`--from-record results/leanstage/d8keep/verified.rec`,

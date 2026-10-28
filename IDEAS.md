@@ -244,3 +244,8 @@ cardinality reasoning inside the search was also measured slower (degree axioms,
 Definition variables for the bipartite cross patterns: -30% conflicts at best, 1.7-9x slower in every variant
 (plain, non-decision auxiliaries, binary fast path, blue-only); `glue --biclique` stays as a measurement switch
 (RESULTS "~15:20"). A verifiable form (semantic definition variables in the checker's table) was designed, not built.
+
+## The 1995 interval gluing (2026-10-28): measured as a per-pair DPLL, 8x worse than CDCL; full double tree = 2-5x at best
+`monster cover-mr` + `monster mr-glue` (RESULTS "~16:30"). Per-node cost 0.16 µs but 10^8 nodes per pair without learning;
+the paper's lookahead/sharing/symmetries would bring maybe 2-5x over CDCL, with weeks of work and proof logging as tree
+resolution (no Lean change). Open, not promising enough to displace machines.
