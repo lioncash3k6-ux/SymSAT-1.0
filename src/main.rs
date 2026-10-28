@@ -59,7 +59,7 @@ struct Args {
 }
 
 fn parse(args: &[String]) -> Args {
-    let bool_flags = ["resume", "stop-on-sat", "quiet", "help", "degree-axioms", "vivify", "stable", "patterns", "proof", "lemmas", "books", "no-adaptive", "one-sided", "no-flip", "cube-lemmas", "flip", "sub-flip", "no-books", "verify", "record", "parity", "book-axioms", "reuse-sol", "no-check", "bounds", "keep", "fake"];
+    let bool_flags = ["resume", "stop-on-sat", "quiet", "help", "degree-axioms", "vivify", "stable", "patterns", "proof", "lemmas", "books", "no-adaptive", "one-sided", "no-flip", "cube-lemmas", "flip", "sub-flip", "no-books", "verify", "record", "parity", "book-axioms", "reuse-sol", "no-check", "bounds", "keep", "fake", "biclique"];
     let mut kv = HashMap::new();
     let mut flags = Vec::new();
     let mut pos = Vec::new();
@@ -164,6 +164,7 @@ fn config_from(a: &Args) -> Config {
         // unit mode: cube-and-conquer inside one solver by default (A/B 2026-10-27: secs 0.27, CI 0.20-0.43 vs whole unit)
         unit_budget: a.get("unit-budget", if mode == Mode::Unit { 5_000u64 } else { 20_000u64 }),
         degree_axioms: a.has("degree-axioms"),
+        biclique: a.has("biclique"),
         book_axioms: a.has("book-axioms"),
         vivify: a.has("vivify"),
         cube_budget: a.get("cube-budget", if mode == Mode::Unit { 5_000u64 } else { 0u64 }),
@@ -1230,6 +1231,7 @@ fn cmd_ladder(a: &Args) {
             unit_budget: 0,
             units: None,
             degree_axioms: false,
+            biclique: false,
             book_axioms: false,
             vivify: false,
             cube_budget: 0,

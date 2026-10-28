@@ -70,6 +70,8 @@ pub enum LratLine {
 struct Watch {
     cref: u32,
     blocker: Lit,
+    /// binary clause: `blocker` is the other literal and the arena is never read while propagating
+    bin: bool,
 }
 
 #[derive(Default, Clone, Debug)]
@@ -154,6 +156,8 @@ pub struct Solver {
     viv_pending: bool,
     /// MONSTER_BRANCH=vertex: decide the lowest unassigned variable (vertex-major for edge formulas) instead of VSIDS
     vertex_order: bool,
+    /// variables never picked as decisions (definition variables of a reencoding; they are set by propagation)
+    pub no_decide: Vec<bool>,
     /// MONSTER_PATVIV=1: vertex vivification of stored patterns at the root (see `vivify_patterns`)
     patviv: bool,
     patviv_pending: bool,
@@ -237,6 +241,7 @@ impl Solver {
             vivify_enabled: false,
             viv_pending: false,
             vertex_order: std::env::var("MONSTER_BRANCH").is_ok_and(|v| v == "vertex"),
+            no_decide: Vec::new(),
             patviv: std::env::var_os("MONSTER_PATVIV").is_some(),
             patviv_pending: false,
             pv_shrunk: 0,
@@ -506,8 +511,9 @@ impl Solver {
     fn attach(&mut self, c: u32) {
         let l0 = self.arena[c as usize + HDR];
         let l1 = self.arena[c as usize + HDR + 1];
-        self.watches[l0 as usize].push(Watch { cref: c, blocker: l1 });
-        self.watches[l1 as usize].push(Watch { cref: c, blocker: l0 });
+        let bin = (self.arena[c as usize] & SIZE_MASK) == 2;
+        self.watches[l0 as usize].push(Watch { cref: c, blocker: l1, bin });
+        self.watches[l1 as usize].push(Watch { cref: c, blocker: l0, bin });
     }
 
     #[inline]
@@ -553,6 +559,28 @@ impl Solver {
                     j += 1;
                     continue;
                 }
+                if w.bin {
+                    // binary fast path: the other literal is forced or conflicting; keep the implied literal first in
+                    // the arena (conflict analysis reads reason clauses that way)
+                    let base = w.cref as usize + HDR;
+                    if self.arena[base] != w.blocker {
+                        self.arena.swap(base, base + 1);
+                    }
+                    ws[j] = w;
+                    j += 1;
+                    if self.val(w.blocker) == -1 {
+                        confl = w.cref;
+                        while i < n {
+                            ws[j] = ws[i];
+                            j += 1;
+                            i += 1;
+                        }
+                        self.qhead = self.trail.len();
+                    } else {
+                        self.enqueue(w.blocker, w.cref);
+                    }
+                    continue;
+                }
                 let c = w.cref as usize;
                 let size = (self.arena[c] & SIZE_MASK) as usize;
                 let base = c + HDR;
@@ -561,7 +589,7 @@ impl Solver {
                 }
                 let first = self.arena[base];
                 if first != w.blocker && self.val(first) == 1 {
-                    ws[j] = Watch { cref: w.cref, blocker: first };
+                    ws[j] = Watch { cref: w.cref, blocker: first, bin: false };
                     j += 1;
                     continue;
                 }
@@ -570,11 +598,11 @@ impl Solver {
                     if self.val(lk) != -1 {
                         self.arena[base + 1] = lk;
                         self.arena[base + k] = false_lit;
-                        self.watches[lk as usize].push(Watch { cref: w.cref, blocker: first });
+                        self.watches[lk as usize].push(Watch { cref: w.cref, blocker: first, bin: false });
                         continue 'outer;
                     }
                 }
-                ws[j] = Watch { cref: w.cref, blocker: first };
+                ws[j] = Watch { cref: w.cref, blocker: first, bin: false };
                 j += 1;
                 if self.val(first) == -1 {
                     confl = w.cref;
@@ -1278,6 +1306,9 @@ impl Solver {
             return None;
         }
         while let Some(v) = self.heap_pop() {
+            if (v as usize) < self.no_decide.len() && self.no_decide[v as usize] {
+                continue;
+            }
             let l0 = (v as Lit) << 1;
             if self.vals[l0 as usize] == 0 {
                 self.stats.decisions += 1;

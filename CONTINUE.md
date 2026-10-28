@@ -155,6 +155,24 @@ CLOSED: measured not the lever.
 **14:40: counting route CLOSED** (user: "focus everything on this"): `monster count-kill` census, 0 of 40.9 M d=10 pairs
 and 0 of 358 d=8 pairs refuted by any counting condition up to edge-level double counting (RESULTS "~14:40", IDEAS).
 No order of magnitude exists there; the remaining lever is machines.
+**14:25: biclique reencoding under measurement** (user: "dynamic bicliques; has to be verifiable; approval to discover"):
+`glue --mode unit --biclique` (src/cover.rs `build_gamma_opts`, `Aux`): SBVA-style definition variables z = OR / r = AND of one
+vertex's cross literals to a mono set on the other side turn the K(2,3)/K(1,4)/K(2,2)/K(1,3) clauses of a unit into 2-literal
+clauses; uncertified (refused with `--check-every > 0`). Running: `symsat-ab-biclique` (paired 16-unit d=10 sample, results in
+`results/ab/2026-10-28T142353Z`, row appended to bench/ab.jsonl) and a 2-unit probe. Verifiable design if it wins: give each
+definition variable a SEMANTIC definition in the checker's variable table (`VarDef = edge a b | or lits | and lits`, one level,
+lits must be edges), so the definition clauses are tautologies in every colouring and all soundness statements stay universal
+(no existential invariant); only ~14 Lean sites read the table as a pair; new line `u k e z lits 0` defines z in a sub-database;
+the translator maps solver aux vars to fresh ids. Verdict and next step go into RESULTS when the ab run ends.
+**14:55 interim (2-unit probe, seed 7):** plain (7,971) 840k conflicts / 36 s, (10,3190) 3.76 M / 287 s; biclique 2.13 M / 312 s and
+3.13 M / 647 s; + definition variables excluded from decisions (`Solver.no_decide`) 2.33 M / 428 s and 2.62 M / 493 s; blue-only
+variant (`MONSTER_BICLIQUE_BLUE=1`) 3.6 M / 593 s on the second. Fewer conflicts at best, 2-9x slower: the reencoded formula is
+~90% binary clauses and each conflict cost 2.5x. Added a **binary-clause fast path** to `propagate` (`Watch.bin`, no arena read;
+plain formulas unchanged: identical conflicts, neutral time; 39 + 6 tests pass); the probe with it is running, as is the paired
+16-unit `symsat-ab-biclique` (plain reencoding) whose row lands in bench/ab.jsonl.
+**15:20: biclique route CLOSED** (RESULTS "~15:20"): all variants slower; the Lean definition-variable extension was designed,
+not built; `Watch.bin` binary fast path kept (neutral, tested). Counting, symmetry inside units and bicliques are now all
+measured dead at the unit level; the remaining real lever is machines.
 **Then:** d=12 Lean stage (`--d 12 --gray-a 6 --gray-b 8`, ~37,034 units; after d=10 on this box, or now on another
 machine from the bundle: the stage driver needs the checker binary too, add `verified/.lake/build/bin/checker` to the
 bundle); final assembly: three `assemble-spec` blocks (`--from-record results/leanstage/d8keep/verified.rec`,

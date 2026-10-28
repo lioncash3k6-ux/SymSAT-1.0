@@ -212,7 +212,69 @@ fn bits(mut x: u32) -> impl Iterator<Item = usize> {
     })
 }
 
+
+/// Auxiliary (definition) variables of the biclique reencoding of a unit: `z = OR(cross literals of one vertex to a
+/// set on the other side)` and `r = AND(...)`, created on demand with their definition clauses. Every clause of the
+/// plain GAMMA is a complete bipartite pattern between a mono set of A and a mono set of B; with these variables a
+/// 6-literal K(2,3) clause becomes 2 literals, a K(1,4) one becomes 2, etc. (SBVA-style; measured 2026-10-28).
+struct Aux {
+    next: usize,
+    m: usize,
+    ors: std::collections::HashMap<(bool, usize, u32), i32>,
+    ands: std::collections::HashMap<(bool, usize, u32), i32>,
+    defs: Vec<Clause>,
+}
+
+impl Aux {
+    /// cross literals of vertex `v` (on side A if `a_side`) to the set `set` on the other side
+    fn cross(&self, a_side: bool, v: usize, set: u32) -> Vec<i32> {
+        bits(set).map(|o| if a_side { 1 + v * self.m + o } else { 1 + o * self.m + v } as i32).collect()
+    }
+    fn or_var(&mut self, a_side: bool, v: usize, set: u32) -> i32 {
+        if let Some(&z) = self.ors.get(&(a_side, v, set)) {
+            return z;
+        }
+        self.next += 1;
+        let z = self.next as i32;
+        let ls = self.cross(a_side, v, set);
+        let mut c = vec![-z];
+        c.extend(&ls);
+        self.defs.push(c);
+        for &l in &ls {
+            self.defs.push(vec![z, -l]);
+        }
+        self.ors.insert((a_side, v, set), z);
+        z
+    }
+    fn and_var(&mut self, a_side: bool, v: usize, set: u32) -> i32 {
+        if let Some(&r) = self.ands.get(&(a_side, v, set)) {
+            return r;
+        }
+        self.next += 1;
+        let r = self.next as i32;
+        let ls = self.cross(a_side, v, set);
+        let mut c = vec![r];
+        c.extend(ls.iter().map(|&l| -l));
+        self.defs.push(c);
+        for &l in &ls {
+            self.defs.push(vec![-r, l]);
+        }
+        self.ands.insert((a_side, v, set), r);
+        r
+    }
+}
+
+fn without_top(set: u32) -> (u32, usize) {
+    let top = 31 - set.leading_zeros() as usize;
+    (set & !(1 << top), top)
+}
 pub fn build_gamma(s: usize, t: usize, ga: &Gen, gb: &Gen) -> Gamma {
+    build_gamma_opts(s, t, ga, gb, false)
+}
+
+/// `biclique`: the reencoding with definition variables (see `Aux`); not for certified runs (the definition clauses
+/// are not clauses of the pair CNFs, so `unit_glue_check` would reject them) until the checker knows definitions.
+pub fn build_gamma_opts(s: usize, t: usize, ga: &Gen, gb: &Gen, biclique: bool) -> Gamma {
     let (d, m) = (ga.base.n, gb.base.n);
     let (ka, kb) = (ga.gray.len(), gb.gray.len());
     let mut g = Gamma { d, m, ka, kb, nvars: d * m + ka + kb, clauses: Vec::new() };
@@ -234,6 +296,7 @@ pub fn build_gamma(s: usize, t: usize, ga: &Gen, gb: &Gen) -> Gamma {
     };
     let ga0 = d * m + 1;
     let gb0 = d * m + 1 + ka;
+    let mut aux: Option<Aux> = if biclique { Some(Aux { next: g.nvars, m, ors: Default::default(), ands: Default::default(), defs: Vec::new() }) } else { None };
     for (red, k, sign) in [(true, s, -1i32), (false, t, 1i32)] {
         for i in 1..k {
             let sa = if red { ra.sets(i, true) } else { ba.sets(i, false) };
@@ -244,9 +307,48 @@ pub fn build_gamma(s: usize, t: usize, ga: &Gen, gb: &Gen) -> Gamma {
             for &ka_ in &sa {
                 for &cb in &sb {
                     let mut cl = Vec::with_capacity(i * (k - i) + 4);
-                    for x in bits(ka_) {
-                        for y in bits(cb) {
-                            cl.push(sign * (1 + x * m + y) as i32);
+                    let na = ka_.count_ones() as usize;
+                    let nb = cb.count_ones() as usize;
+                    let mut done = false;
+                    let blue_only = std::env::var_os("MONSTER_BICLIQUE_BLUE").is_some();
+                    if let Some(ax) = aux.as_mut().filter(|_| !(red && blue_only)) {
+                        done = true;
+                        let av: Vec<usize> = bits(ka_).collect();
+                        let bv: Vec<usize> = bits(cb).collect();
+                        if !red && na == 1 && nb >= 3 {
+                            let (tset, q) = without_top(cb);
+                            cl.push(ax.or_var(true, av[0], tset));
+                            cl.push((1 + av[0] * m + q) as i32);
+                        } else if !red && na == 2 && nb >= 2 {
+                            cl.push(ax.or_var(true, av[0], cb));
+                            cl.push(ax.or_var(true, av[1], cb));
+                        } else if !red && nb == 2 && na >= 3 {
+                            cl.push(ax.or_var(false, bv[0], ka_));
+                            cl.push(ax.or_var(false, bv[1], ka_));
+                        } else if !red && nb == 1 && na >= 3 {
+                            let (tset, q) = without_top(ka_);
+                            cl.push(ax.or_var(false, bv[0], tset));
+                            cl.push((1 + q * m + bv[0]) as i32);
+                        } else if red && na == 1 && nb >= 3 {
+                            let (pset, w3) = without_top(cb);
+                            cl.push(-ax.and_var(true, av[0], pset));
+                            cl.push(-((1 + av[0] * m + w3) as i32));
+                        } else if red && na == 2 && nb == 2 {
+                            cl.push(-ax.and_var(true, av[0], cb));
+                            cl.push(-ax.and_var(true, av[1], cb));
+                        } else if red && nb == 1 && na >= 3 {
+                            let (pset, q) = without_top(ka_);
+                            cl.push(-ax.and_var(false, bv[0], pset));
+                            cl.push(-((1 + q * m + bv[0]) as i32));
+                        } else {
+                            done = false;
+                        }
+                    }
+                    if !done {
+                        for x in bits(ka_) {
+                            for y in bits(cb) {
+                                cl.push(sign * (1 + x * m + y) as i32);
+                            }
                         }
                     }
                     guard(ga, ka_, red, ga0, &mut cl);
@@ -275,6 +377,10 @@ pub fn build_gamma(s: usize, t: usize, ga: &Gen, gb: &Gen) -> Gamma {
                 }
             }
         }
+    }
+    if let Some(ax) = aux {
+        g.nvars = ax.next;
+        g.clauses.extend(ax.defs);
     }
     g
 }

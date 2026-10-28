@@ -239,3 +239,8 @@ Cheap counting kills (vertex windows, degree-flow feasibility, edge-level double
 refute 0 of 358 d=8 pairs and 0 of 40,945,408 d=10 pairs (`monster count-kill`, RESULTS "~14:40"). The catalogues
 already satisfy every local condition; the hardness is the joint cross-edge search. Do not retry counting-only pruning;
 cardinality reasoning inside the search was also measured slower (degree axioms, cone propagator).
+
+## Biclique / SBVA reencoding of units (2026-10-28): CLOSED by measurement
+Definition variables for the bipartite cross patterns: -30% conflicts at best, 1.7-9x slower in every variant
+(plain, non-decision auxiliaries, binary fast path, blue-only); `glue --biclique` stays as a measurement switch
+(RESULTS "~15:20"). A verifiable form (semantic definition variables in the checker's table) was designed, not built.

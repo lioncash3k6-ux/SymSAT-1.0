@@ -73,6 +73,8 @@ pub struct Config {
     pub units: Option<Vec<(usize, usize)>>,
     /// add degree-window axioms (every vertex's red degree in the window implied by the catalogue maxima)
     pub degree_axioms: bool,
+    /// unit mode: biclique reencoding with definition variables (uncertified measurement switch, 2026-10-28)
+    pub biclique: bool,
     /// pair mode: book axioms (two-root lemmas as cardinality constraints, `encode::pair_book_axioms`)
     pub book_axioms: bool,
     /// learnt-clause vivification at root
@@ -833,7 +835,7 @@ fn run_unit_task(sh: &Shared, w: usize, task: &Task, check: bool) -> TaskOut {
     let (ca, cb) = (st.cov_a.as_ref().unwrap(), st.cov_b.as_ref().unwrap());
     let (ga, gb) = (&ca.gens[task.fixed], &cb.gens[task.lo]);
     let (mem_a, mem_b) = (&ca.members[task.fixed], &cb.members[task.lo]);
-    let mut gm = build_gamma(sh.cfg.s, sh.cfg.t, ga, gb);
+    let mut gm = crate::cover::build_gamma_opts(sh.cfg.s, sh.cfg.t, ga, gb, sh.cfg.biclique);
     if sh.cfg.degree_axioms {
         // uncertified measurement switch (build() refuses it with --check-every > 0): degree windows as cardinality
         // constraints with auxiliary variables appended after the unit's own variables
@@ -844,6 +846,11 @@ fn run_unit_task(sh: &Shared, w: usize, task: &Task, check: bool) -> TaskOut {
         gm.nvars = (next - 1) as usize;
     }
     let mut solver = Solver::new(gm.nvars);
+    if sh.cfg.biclique {
+        // definition variables are never decisions (SBVA practice): they follow from the cross edges by propagation
+        let orig = gm.d * gm.m + gm.ka + gm.kb;
+        solver.no_decide = (0..gm.nvars).map(|v| v >= orig).collect();
+    }
     solver.live = Some(ws.live.clone());
     solver.vivify_enabled = sh.cfg.vivify;
     solver.mode_switching = sh.cfg.stable;
@@ -1504,7 +1511,7 @@ pub fn build(cfg: Config) -> Result<(Arc<Shared>, Vec<String>), String> {
     if cfg.mode == Mode::Pair && cfg.check_every > 0 && crate::cone::coneprop_env().is_some() {
         return Err("MONSTER_CONEPROP writes no proofs yet (uncertified prototype): pass --check-every 0".into());
     }
-    if cfg.mode == Mode::Unit && cfg.check_every > 0 && cfg.degree_axioms {
+    if cfg.mode == Mode::Unit && cfg.check_every > 0 && (cfg.degree_axioms || cfg.biclique) {
         return Err("--degree-axioms in unit mode adds underived clauses (measurement only): pass --check-every 0".into());
     }
     let (stages, mut notes) = plan(&cfg)?;

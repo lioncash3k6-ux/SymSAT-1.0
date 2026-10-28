@@ -1241,3 +1241,32 @@ slower than CDCL as a search and 2-8x slower as a propagator; pattern memory acr
 is CLOSED: no order of magnitude is available from counting on this problem, before or inside the search.
 What remains for speed is machines (`--shard`, bootstrap, bundle). The d=10 Lean stage kept running throughout
 (the census used 8 threads for 12 minutes).
+
+### 2026-10-28 ~15:20: the biclique (SBVA-style) reencoding of units, measured: fewer conflicts, 2-9x slower (closed)
+Question (user): "dynamic bicliques", with a verifiable form. Every clause of a unit is a complete bipartite cross pattern
+between a mono set of A and one of B (K(1,3), K(2,2) red; K(1,4), K(2,3), K(3,2), K(4,1) blue). `glue --mode unit
+--biclique` (`cover::build_gamma_opts`, `Aux`) introduces definition variables z = OR / r = AND of one vertex's cross
+literals to a mono set on the other side, turning every such clause into 2 literals (~2,200 definition variables and
+~8,000 definition clauses beside the 140 cross variables at d=10). Verifiable design, ready if it had won: definition
+variables with a SEMANTIC definition in the checker's variable table (`VarDef = edge | or lits | and lits`, one level over
+edges), so definition clauses are tautologies in every colouring and all soundness statements stay universal; ~14 Lean
+sites read the table as a pair; a sub-database line `u k e z lits 0` would introduce z. Measured on two d=10 units (seed 7
+sample; conflicts deterministic, seconds on the loaded box):
+
+| variant | unit (7,971) conflicts / s | unit (10,3190) conflicts / s |
+|---|---|---|
+| plain GAMMA | 839,751 / 36 | 3,761,450 / 287 |
+| biclique | 2,132,851 / 312 | 3,132,304 / 647 |
+| + definition variables never decisions (`Solver.no_decide`) | 2,326,506 / 428 | 2,616,784 / 493 |
+| + binary-clause fast path in `propagate` (`Watch.bin`) | 2,326,506 / 472 | 2,616,784 / 513 |
+| blue-only definitions (`MONSTER_BICLIQUE_BLUE=1`) | (not better) | 3,599,876 / 593 |
+
+Paired 16-unit sample (`symsat-ab-biclique`, plain reencoding, row in bench/ab.jsonl): about a third fewer conflicts in
+total and ~1.7x more seconds per task (interim at 14 of 16 tasks: 24.4 M conflicts / 5,521 s vs 39.8 M / 3,761 s for all 16).
+Verdict: at best -30% conflicts, always slower; the search over definition variables propagates far more per decision
+(the reencoded formula is ~90% binary clauses), and neither excluding them from decisions nor a dedicated binary
+propagation path recovers it. The Lean extension was not built. CLOSED. Kept: the binary fast path (correct by the test
+suite and identical conflict counts on plain formulas; neutral in time) and the `--biclique` switch as a measurement tool.
+Also already closed yesterday for the same question (RESULTS 2026-10-27 ~11:40): symmetry inside units (group orders
+almost all 1 after the covers). After counting (0 kills) and bicliques (slower), no order of magnitude is left at the
+unit-solving level on this solver; what remains verifiable and real is machines.
