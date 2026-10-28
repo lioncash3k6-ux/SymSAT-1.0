@@ -1,6 +1,0 @@
-results/leanstage/d10/units/u0_363.slrat
-results/leanstage/d10/units/u0_361.slrat
-results/leanstage/d10/units/u0_362.slrat
-results/leanstage/d10/units/u0_364.slrat
-results/leanstage/d10/units/u0_365.slrat
-results/leanstage/d10/units/u0_369.slrat

@@ -12,6 +12,7 @@ mod assemble;
 mod canon;
 mod catalog;
 mod cone;
+mod count;
 mod cover;
 mod dash;
 mod encode;
@@ -1383,6 +1384,15 @@ fn main() {
         Some("unit-lean") => cmd_unit_lean(&a),
         Some("unit-lean-stage") => cmd_unit_lean_stage(&a),
         Some("assemble-spec") => cmd_assemble_spec(&a),
+        Some("count-kill") => {
+            // counting-only refutation census of a stage (src/count.rs); no proofs, a measurement
+            let cfg = config_from(&a);
+            let d: usize = a.get("d", 10usize);
+            let m = cfg.n - 1 - d;
+            let la = catalog::load(&cfg.catalogs, cfg.s - 1, cfg.t, d).unwrap_or_else(|e| die(&e));
+            let lb = catalog::load(&cfg.catalogs, cfg.s, cfg.t - 1, m).unwrap_or_else(|e| die(&e));
+            count::run(cfg.s, cfg.t, cfg.n, d, &la, &lb, a.get("threads", 8usize));
+        }
         Some("merge-shards") => {
             let out = a.kv.get("out").map(PathBuf::from).unwrap_or_else(|| die("usage: monster merge-shards --out DIR SHARD_DIR..."));
             let shards: Vec<PathBuf> = a.pos.iter().skip(1).map(PathBuf::from).collect();

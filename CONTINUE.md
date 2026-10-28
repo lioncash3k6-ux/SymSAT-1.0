@@ -152,6 +152,9 @@ per-step rebuild of the edge table (0.9 s, fixed in Stream.lean) and allocation 
 preallocated assignment). 20 MB proof: 2.95 → 1.95 s; this morning 6.15 s. Harness: `scripts/bench_checker.sh`; profile with
 `sudo perf record` (works without sysctl). The d=10 stage runs this checker since 13:10. Idea "packed clause store" is
 CLOSED: measured not the lever.
+**14:40: counting route CLOSED** (user: "focus everything on this"): `monster count-kill` census, 0 of 40.9 M d=10 pairs
+and 0 of 358 d=8 pairs refuted by any counting condition up to edge-level double counting (RESULTS "~14:40", IDEAS).
+No order of magnitude exists there; the remaining lever is machines.
 **Then:** d=12 Lean stage (`--d 12 --gray-a 6 --gray-b 8`, ~37,034 units; after d=10 on this box, or now on another
 machine from the bundle: the stage driver needs the checker binary too, add `verified/.lake/build/bin/checker` to the
 bundle); final assembly: three `assemble-spec` blocks (`--from-record results/leanstage/d8keep/verified.rec`,

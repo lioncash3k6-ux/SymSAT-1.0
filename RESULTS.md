@@ -1210,3 +1210,34 @@ Findings (perf, min-of-4 benches):
 Axioms of `check_sound`, `getC_eq_getCFast`, `rup_eq_rupFast`, `stageRefuted_of_verified`: the standard three; 39 + 6
 tests and the 20 lift mutants pass. On the 332 MB unit (0,3459): 27.7 s user (59 s wall this morning). The running d=10
 stage was switched to this checker at 13:10. Lean is now ~0.4x the solve CPU per hard d=10 unit.
+
+### 2026-10-28 ~14:40: the counting route, measured: it refutes NOTHING at d=8 and d=10 (closed)
+Question (user): can cheap counting conditions, McKay–Radziszowski style, kill most catalogue pairs before any search,
+so that the stages take hours instead of weeks? Tool: `monster count-kill --d D` (src/count.rs, no proofs, a census over
+every catalogue pair of a stage, 8 threads). Conditions, all consequences of "no red K4, no blue K5" plus the Lean-verified
+degree bounds (red degree in [7,13]):
+1. per-vertex windows on the cross degrees: for u in A, 1 + deg_A(u) + r_u in [7,13], r_u <= largest red-triangle-free
+   subset of B, 14 - r_u <= largest blue-K4-free subset of B; for w in B symmetrically (deg_B(w) + r_w in [7,13],
+   10 - r_w <= largest blue-K4-free subset of A);
+2. compatibility of the window sums on the two sides;
+3. existence of a bipartite cross graph with those degree windows (max-flow with lower bounds);
+4. edge-level double counting: the red B-edges inside each u's red B-neighbourhood are red pairs of B with u as a cross
+   common red neighbour (at most 4 - common-inside-B each; the common red neighbourhood of a red edge is a blue clique),
+   the blue B-edges inside the blue B-neighbourhood are blue pairs with u as a cross common blue neighbour (at most
+   7 - common-inside-B each; vertex 0 is already one), and the two symmetric sums over A; each sum is bounded below by
+   the min-edge functions of the degree vector, minimised by a knapsack DP over every feasible total.
+
+| stage | pairs | killed by 1 | by 2 | by 3 | by 4 | survive | time |
+|---|---|---|---|---|---|---|---|
+| d=8 | 358 | 0 | 0 | 0 | 0 | 358 (100%) | 0.1 s |
+| d=10 | 40,945,408 | 0 | 0 | 0 | 0 | 40,945,408 (100%) | 57 s prep + 641 s |
+
+Why: the catalogues are already exactly the graphs that satisfy every local condition (both sides are good graphs on
+their own, with the degree bounds built into which sizes exist), and the windows that remain are wide (an A-vertex may
+have 2 to 12 red cross edges). The refutation of a pair lives in the joint cross-edge structure, which is a search, not a
+count; the 1995 gluing was a search too (with catalogue-aware pruning), not a counting kill. Together with the earlier
+negatives (degree-window axioms 32x slower in unit mode; the cone propagator with degree windows and arc consistency 175x
+slower than CDCL as a search and 2-8x slower as a propagator; pattern memory across cubes 25-30%), the counting route
+is CLOSED: no order of magnitude is available from counting on this problem, before or inside the search.
+What remains for speed is machines (`--shard`, bootstrap, bundle). The d=10 Lean stage kept running throughout
+(the census used 8 threads for 12 minutes).

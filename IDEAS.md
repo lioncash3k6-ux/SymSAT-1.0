@@ -233,3 +233,9 @@ Closed with numbers (RESULTS): degree axioms (32x slower in unit mode), hybrid o
 (no certificate). SR with a symmetry witness in place of images: unsound with learned lemmas (above). Still open, unmeasured on
 R(4,5) d=10: one-sided / partial cubes (paused; R(3,6) ladder step did not finish), pattern vivification, cheaper embedding,
 native cardinality (PB) with a verified checker. The sure lever is machines: `glue --shard I/N` + `scripts/bundle.sh`.
+
+## Counting route (2026-10-28): CLOSED by measurement
+Cheap counting kills (vertex windows, degree-flow feasibility, edge-level double counting over common neighbourhoods)
+refute 0 of 358 d=8 pairs and 0 of 40,945,408 d=10 pairs (`monster count-kill`, RESULTS "~14:40"). The catalogues
+already satisfy every local condition; the hardness is the joint cross-edge search. Do not retry counting-only pruning;
+cardinality reasoning inside the search was also measured slower (degree axioms, cone propagator).
