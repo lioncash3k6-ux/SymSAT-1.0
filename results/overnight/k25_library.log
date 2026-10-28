@@ -1,0 +1,17 @@
+lemma: no red book of size 5 (core 11 edges) in 0.00s / 1 conflicts
+lemma: no blue book of size 9 (core 19 edges) in 1.90s / 6915 conflicts
+lemma: no mixed book (edge red) of size 9 (core 18 edges) in 5.13s / 5504 conflicts
+lemma: no mixed book (edge blue) of size 9 (core 18 edges) in 0.02s / 0 conflicts
+lemma: no red star of size 14 (core 14 edges) in 7.92s / 1101 conflicts
+lemma: no blue star of size 18 (core 18 edges) in 434.41s / 12987 conflicts
+  lemma: no red book of size 5 (core 11 edges) in 0.00s / 1 conflicts
+  lemma: no blue book of size 9 (core 19 edges) in 1.90s / 6915 conflicts
+  lemma: no mixed book (edge red) of size 9 (core 18 edges) in 5.13s / 5504 conflicts
+  lemma: no mixed book (edge blue) of size 9 (core 18 edges) in 0.02s / 0 conflicts
+  lemma: no red star of size 14 (core 14 edges) in 7.92s / 1101 conflicts
+  lemma: no blue star of size 18 (core 18 edges) in 434.41s / 12987 conflicts
+R(4,5)/K25: Unknown in 7m29s | conflicts 26,509 decisions 27,408 props 229,903
+  patterns: learned 26,515 stored 10 dup 2 rejected 26,503 | images used 55,613 (as conflicts 13,226) | search nodes 4,953,618,055 budget cuts 97,160
+  pattern shape: avg 9.8 vertices, 15.5 edges, 3.2 leaves (degree-1 vertices)
+  pattern time: 447.5s propagation, 0.0s canonical forms, of 449.6s total, 11,613,588 embed calls (427 nodes/call)
+RESULT {"instance":"R(4,5)/K25","result":"Unknown","secs":449.569,"conflicts":26509,"proof":"unchecked"}

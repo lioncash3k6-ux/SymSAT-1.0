@@ -1,0 +1,2 @@
+unit-lean: GAMMA 152 vars 5100 clauses; assumption 148 fixed edges; 4083966 conflicts, solve 350.99 s; 4084026 lemmas written (4006525 deletions emitted), 73746302 literals (18.1 per lemma), 85171977 hints, 967.6 MB, 351.15 s total
+MAXRSS_KB 77528 wall 352.16 s user 371.18 sys 1.65

@@ -1,0 +1,7 @@
+c stage d=8: catalogue /home/ubuntu/cascade-solver-ramsey-v4-algebraic/v5/catalogs/r35/n8.g6 x /home/ubuntu/cascade-solver-ramsey-v4-algebraic/v5/catalogs/r44/n16.g6, units 15 x 2, threads 4
+c decoded 179 A-graphs (K_8) and 2 B-graphs (K_16) in 0 ms
+c record /home/ubuntu/monster/results/leanstage/d8keep/verified.rec: 30 clauses read (0 unusable lines) in 2 ms
+c coverage check: 179 x 2 pairs in 14 ms
+s STAGE 8 REFUTED GIVEN THE RECORD: StageRefuted (catalogueFrom files) 8 by theorem MonsterVerified.stageRefuted_of_record (hypothesis: every clause of /home/ubuntu/monster/results/leanstage/d8keep/verified.rec was recorded by checker --lemmas --record)
+c stages refuted: [8]; the theorem r45_le_25_of_stages needs [8, 10, 12]
+MAXRSS_KB 11528 wall 0.02 s

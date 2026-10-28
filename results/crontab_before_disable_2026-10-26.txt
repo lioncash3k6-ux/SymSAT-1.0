@@ -1,0 +1,1 @@
+17 * * * * /home/ubuntu/monster/scripts/backup.sh

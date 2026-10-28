@@ -1,0 +1,21 @@
+CSDP 6.2.0
+Iter:  0 Ap: 0.00e+00 Pobj:  0.0000000e+00 Ad: 0.00e+00 Dobj:  0.0000000e+00 
+Iter:  1 Ap: 9.08e-01 Pobj: -3.6944625e+01 Ad: 9.24e-01 Dobj:  1.0366066e+01 
+Iter:  2 Ap: 1.00e+00 Pobj: -2.4859946e+01 Ad: 9.15e-01 Dobj:  1.0758551e+01 
+Iter:  3 Ap: 1.00e+00 Pobj: -2.3279560e+00 Ad: 8.65e-01 Dobj:  3.6139812e+00 
+Iter:  4 Ap: 1.00e+00 Pobj: -3.2315667e-01 Ad: 9.22e-01 Dobj:  3.2432351e-01 
+Iter:  5 Ap: 1.00e+00 Pobj: -3.9962544e-02 Ad: 9.23e-01 Dobj:  6.9078134e-02 
+Iter:  6 Ap: 1.00e+00 Pobj:  2.9886684e-02 Ad: 9.26e-01 Dobj:  3.7187481e-02 
+Iter:  7 Ap: 1.00e+00 Pobj:  3.3111086e-02 Ad: 9.84e-01 Dobj:  3.3468495e-02 
+Iter:  8 Ap: 1.00e+00 Pobj:  3.3317896e-02 Ad: 1.00e+00 Dobj:  3.3337903e-02 
+Iter:  9 Ap: 9.99e-01 Pobj:  3.3332818e-02 Ad: 1.00e+00 Dobj:  3.3332919e-02 
+Iter: 10 Ap: 1.00e+00 Pobj:  3.3333313e-02 Ad: 9.97e-01 Dobj:  3.3333323e-02 
+Iter: 11 Ap: 9.70e-01 Pobj:  3.3333333e-02 Ad: 9.70e-01 Dobj:  3.3333333e-02 
+Success: SDP solved
+Primal objective value: 3.3333333e-02 
+Dual objective value: 3.3333333e-02 
+Relative primal infeasibility: 1.18e-16 
+Relative dual infeasibility: 6.64e-10 
+Real Relative Gap: 1.47e-10 
+XZ Relative Gap: 1.12e-09 
+DIMACS error measures: 1.18e-16 0.00e+00 1.12e-09 0.00e+00 1.47e-10 1.12e-09

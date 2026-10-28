@@ -1,0 +1,8 @@
+[Unit]
+Description=SymSAT: snapshot every file in ~/monster to GitHub branch backup/auto (ungated safety net)
+
+[Service]
+Type=oneshot
+ExecStart=%h/monster/scripts/snapshot.sh
+Nice=10
+TimeoutStartSec=600

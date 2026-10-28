@@ -1,0 +1,31 @@
+CSDP 6.2.0
+Iter:  0 Ap: 0.00e+00 Pobj:  0.0000000e+00 Ad: 0.00e+00 Dobj:  0.0000000e+00 
+Iter:  1 Ap: 9.60e-01 Pobj: -1.5291971e+03 Ad: 8.94e-01 Dobj:  9.7008732e+00 
+Iter:  2 Ap: 9.31e-01 Pobj: -1.5699309e+03 Ad: 9.56e-01 Dobj:  1.1313160e+01 
+Iter:  3 Ap: 9.40e-01 Pobj: -1.0418960e+03 Ad: 9.16e-01 Dobj:  1.2673903e+01 
+Iter:  4 Ap: 9.66e-01 Pobj: -1.2269870e+02 Ad: 9.52e-01 Dobj:  1.5607269e+01 
+Iter:  5 Ap: 9.83e-01 Pobj: -5.2658590e+00 Ad: 9.41e-01 Dobj:  1.2210872e+01 
+Iter:  6 Ap: 9.97e-01 Pobj: -2.3152794e-01 Ad: 9.48e-01 Dobj:  1.5202893e+00 
+Iter:  7 Ap: 1.00e+00 Pobj: -1.4875783e-02 Ad: 9.98e-01 Dobj:  6.5492488e-02 
+Iter:  8 Ap: 1.00e+00 Pobj: -2.6222999e-03 Ad: 9.90e-01 Dobj:  1.0782513e-02 
+Iter:  9 Ap: 8.73e-01 Pobj: -1.4487107e-03 Ad: 1.00e+00 Dobj:  7.9046978e-03 
+Iter: 10 Ap: 8.59e-01 Pobj: -9.7509252e-04 Ad: 4.90e-01 Dobj:  6.1045483e-03 
+Iter: 11 Ap: 1.00e+00 Pobj: -5.4793616e-04 Ad: 9.61e-01 Dobj:  2.5754881e-03 
+Iter: 12 Ap: 1.00e+00 Pobj: -3.3919894e-04 Ad: 1.00e+00 Dobj:  1.4067328e-03 
+Iter: 13 Ap: 8.69e-01 Pobj: -1.8175228e-04 Ad: 1.00e+00 Dobj:  5.7138988e-04 
+Iter: 14 Ap: 7.63e-01 Pobj: -9.3933024e-05 Ad: 1.00e+00 Dobj:  3.6203256e-04 
+Iter: 15 Ap: 1.00e+00 Pobj: -4.7961776e-05 Ad: 1.00e+00 Dobj:  1.8088485e-04 
+Iter: 16 Ap: 1.00e+00 Pobj: -2.0570672e-05 Ad: 1.00e+00 Dobj:  8.5048236e-05 
+Iter: 17 Ap: 1.00e+00 Pobj: -1.0347086e-05 Ad: 8.34e-01 Dobj:  3.9119751e-05 
+Iter: 18 Ap: 9.96e-01 Pobj: -2.9094541e-06 Ad: 9.91e-01 Dobj:  7.8994087e-06 
+Iter: 19 Ap: 1.00e+00 Pobj: -5.6979970e-07 Ad: 1.00e+00 Dobj:  1.4706402e-06 
+Iter: 20 Ap: 1.00e+00 Pobj: -3.4191760e-08 Ad: 1.00e+00 Dobj:  7.7489083e-08 
+Iter: 21 Ap: 9.60e-01 Pobj: -1.4357384e-09 Ad: 9.57e-01 Dobj:  3.1843324e-09 
+Success: SDP solved
+Primal objective value: -1.4357384e-09 
+Dual objective value: 3.1843324e-09 
+Relative primal infeasibility: 2.48e-12 
+Relative dual infeasibility: 3.21e-09 
+Real Relative Gap: 4.62e-09 
+XZ Relative Gap: 5.07e-09 
+DIMACS error measures: 2.48e-12 0.00e+00 1.57e-08 0.00e+00 4.62e-09 5.07e-09

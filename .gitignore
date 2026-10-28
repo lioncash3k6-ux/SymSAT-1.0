@@ -1,0 +1,8 @@
+target/
+runs/
+# regenerable bulk outputs (GitHub refuses files over 100 MB): flag SDP inputs/solutions, big proof logs
+results/flag/*/problem.dat-s
+results/flag/*/problem.sol
+results/overnight/*.slrat
+results/leanstage/**/*.slrat
+results/leanstage/*/units/

@@ -1,0 +1,10 @@
+{
+  "cmdline": "./target/release/monster glue --s 4 --t 5 --n 25 --d 12 --mode hybrid --books --one-sided --workers 12 --check-every 1 --out /home/ubuntu/monster/results/overnight/one_d12",
+  "machine": "Intel Xeon E3-12xx v2 (Ivy Bridge, IBRS) x16 [\"popcnt\", \"avx\"] 65838964 kB",
+  "config": "Config { s: 4, t: 5, n: 25, route: Parity, degrees: Some([12]), workers: 12, chunk: 2048, mode: Hybrid, minimize: 0, check_every: 1, sample: None, seed: 20261025, catalogs: \"/home/ubuntu/cascade-solver-ramsey-v4-algebraic/v5/catalogs\", out: Some(\"/home/ubuntu/monster/results/overnight/one_d12\"), resume: false, cache_cap: 50000, stop_on_sat: false, quiet: false, max_pairs_per_task: None, covers: None, gray_a: 6, gray_b: 6, unit_budget: 20000, units: None, degree_axioms: false, vivify: false, cube_budget: 0, stable: false, pat_lbd: 12, books: true, one_sided: true }",
+  "catalogues": [
+    {"file": "/home/ubuntu/cascade-solver-ramsey-v4-algebraic/v5/catalogs/r35/n12.g6", "graphs": 12, "mckay": Some(12), "sha256": "f3ceeb4d54908aab5a5b51f989bfdab9e540dbece5ac82968698340097570f51"},
+    {"file": "/home/ubuntu/cascade-solver-ramsey-v4-algebraic/v5/catalogs/r44/n12.g6", "graphs": 1449166, "mckay": Some(1449166), "sha256": "f8e073cd2822cb3e657fc8af6fde49c641664491bdf67134f1e06fff05bf81e3"}
+  ],
+  "notes": ["lemma library: 6 lemmas, proof 82116 lines VERIFIED by the symmetric checker (6.7s, cache /home/ubuntu/monster/results/library_R45_K25_books.bin)", "lemma: no red book of size 5 (core 11 edges) in 0.00s / 1 conflicts", "lemma: no blue book of size 9 (core 19 edges) in 1.65s / 6915 conflicts", "lemma: no mixed book (edge red) of size 9 (core 18 edges) in 1.59s / 5504 conflicts", "lemma: no mixed book (edge blue) of size 9 (core 18 edges) in 0.02s / 0 conflicts", "lemma: no red star of size 14 (core 14 edges) in 0.21s / 1101 conflicts", "lemma: no blue star of size 18 (core 18 edges) in 237.78s / 12987 conflicts"]
+}

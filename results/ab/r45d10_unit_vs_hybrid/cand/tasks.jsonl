@@ -1,0 +1,2 @@
+{"task":1,"d":10,"fixed":1,"lo":28,"hi":29,"unsat":3392,"sat":0,"hits":0,"solves":1,"roots":0,"conflicts":333913,"nodes":5102070579,"embed":75173254,"scans":1823335,"secs":611.709,"checked":false,"worker":1}
+{"task":5,"d":10,"fixed":2,"lo":2025,"hi":2026,"unsat":1209,"sat":0,"hits":0,"solves":1,"roots":0,"conflicts":597195,"nodes":22246805646,"embed":273111695,"scans":3517875,"secs":2405.398,"checked":false,"worker":1}

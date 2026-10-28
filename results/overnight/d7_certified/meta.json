@@ -1,0 +1,10 @@
+{
+  "cmdline": "./target/release/monster glue --s 4 --t 5 --n 25 --route all --d 7 --mode pair --check-every 1 --workers 2 --chunk 8 --quiet --out results/overnight/d7_certified --resume",
+  "machine": "Intel Xeon E3-12xx v2 (Ivy Bridge, IBRS) x16 [\"popcnt\", \"avx\"] 65838984 kB",
+  "config": "Config { s: 4, t: 5, n: 25, route: All, degrees: Some([7]), workers: 2, chunk: 8, mode: Pair, minimize: 0, check_every: 1, sample: None, seed: 20261025, catalogs: \"/home/ubuntu/cascade-solver-ramsey-v4-algebraic/v5/catalogs\", out: Some(\"results/overnight/d7_certified\"), resume: true, cache_cap: 50000, stop_on_sat: false, quiet: true, max_pairs_per_task: None, covers: None, gray_a: 6, gray_b: 6, unit_budget: 20000, units: None, degree_axioms: false, book_axioms: false, vivify: false, cube_budget: 0, stable: false, pat_lbd: 12, books: true, one_sided: false, sched_static: false }",
+  "catalogues": [
+    {"file": "/home/ubuntu/cascade-solver-ramsey-v4-algebraic/v5/catalogs/r35/n7.g6", "graphs": 71, "mckay": Some(71), "sha256": "2fec405f805b5c6e76b91229e91d67ee27000a2e776a5064ed3c7bb3b92f5875"},
+    {"file": "/home/ubuntu/cascade-solver-ramsey-v4-algebraic/v5/catalogs/r44/n17.g6", "graphs": 1, "mckay": Some(1), "sha256": "d4509eee8f3a2e54b1a2173102654bd3cc4d171e54997b808fced4baf9a2f6fc"}
+  ],
+  "notes": []
+}

@@ -1,0 +1,34 @@
+CSDP 6.2.0
+Iter:  0 Ap: 0.00e+00 Pobj:  0.0000000e+00 Ad: 0.00e+00 Dobj:  0.0000000e+00 
+Iter:  1 Ap: 9.60e-01 Pobj: -5.7139038e+02 Ad: 8.24e-01 Dobj:  2.3391750e+01 
+Iter:  2 Ap: 9.03e-01 Pobj: -5.7703843e+02 Ad: 9.56e-01 Dobj:  2.9666319e+01 
+Iter:  3 Ap: 9.17e-01 Pobj: -5.4352908e+02 Ad: 9.39e-01 Dobj:  3.2729172e+01 
+Iter:  4 Ap: 9.75e-01 Pobj: -1.8800033e+02 Ad: 8.75e-01 Dobj:  3.7804428e+01 
+Iter:  5 Ap: 1.00e+00 Pobj: -1.2727062e+01 Ad: 8.96e-01 Dobj:  2.4770954e+01 
+Iter:  6 Ap: 1.00e+00 Pobj: -7.6646713e-01 Ad: 9.39e-01 Dobj:  3.1992295e+00 
+Iter:  7 Ap: 1.00e+00 Pobj: -3.0102353e-01 Ad: 9.58e-01 Dobj:  8.1862558e-01 
+Iter:  8 Ap: 1.00e+00 Pobj: -8.7302223e-02 Ad: 8.60e-01 Dobj:  2.8309997e-01 
+Iter:  9 Ap: 1.00e+00 Pobj: -3.2933799e-02 Ad: 9.63e-01 Dobj:  9.1232991e-02 
+Iter: 10 Ap: 7.85e-01 Pobj: -2.3261746e-02 Ad: 1.00e+00 Dobj:  4.9227619e-02 
+Iter: 11 Ap: 1.00e+00 Pobj: -9.0343378e-03 Ad: 1.00e+00 Dobj:  2.4704321e-02 
+Iter: 12 Ap: 1.00e+00 Pobj: -3.7688033e-03 Ad: 9.66e-01 Dobj:  7.3099441e-03 
+Iter: 13 Ap: 1.00e+00 Pobj: -1.3531727e-03 Ad: 1.00e+00 Dobj:  3.0909354e-03 
+Iter: 14 Ap: 9.21e-01 Pobj: -6.3758866e-04 Ad: 1.00e+00 Dobj:  1.2787628e-03 
+Iter: 15 Ap: 1.00e+00 Pobj: -2.5756080e-04 Ad: 1.00e+00 Dobj:  5.0218016e-04 
+Iter: 16 Ap: 1.00e+00 Pobj: -1.1828693e-04 Ad: 1.00e+00 Dobj:  2.3761162e-04 
+Iter: 17 Ap: 9.06e-01 Pobj: -6.3226996e-05 Ad: 1.00e+00 Dobj:  1.1691526e-04 
+Iter: 18 Ap: 1.00e+00 Pobj: -2.8694512e-05 Ad: 1.00e+00 Dobj:  4.6505948e-05 
+Iter: 19 Ap: 1.00e+00 Pobj: -8.5533382e-06 Ad: 1.00e+00 Dobj:  1.3256461e-05 
+Iter: 20 Ap: 7.88e-01 Pobj: -5.1644652e-06 Ad: 1.00e+00 Dobj:  7.4768392e-06 
+Iter: 21 Ap: 1.00e+00 Pobj: -1.3644977e-06 Ad: 1.00e+00 Dobj:  2.4442410e-06 
+Iter: 22 Ap: 1.00e+00 Pobj: -2.4496172e-07 Ad: 1.00e+00 Dobj:  4.4493446e-07 
+Iter: 23 Ap: 1.00e+00 Pobj: -2.3168696e-08 Ad: 1.00e+00 Dobj:  4.7830828e-08 
+Iter: 24 Ap: 9.52e-01 Pobj: -1.0724130e-09 Ad: 9.35e-01 Dobj:  3.0759549e-09 
+Success: SDP solved
+Primal objective value: -1.0724130e-09 
+Dual objective value: 3.0759549e-09 
+Relative primal infeasibility: 1.76e-11 
+Relative dual infeasibility: 1.07e-09 
+Real Relative Gap: 4.15e-09 
+XZ Relative Gap: 4.34e-09 
+DIMACS error measures: 1.76e-11 0.00e+00 5.43e-09 0.00e+00 4.15e-09 4.34e-09

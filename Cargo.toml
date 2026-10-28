@@ -1,0 +1,23 @@
+[package]
+name = "monster"
+version = "1.0.0"
+license = "MIT"
+description = "SymSAT: exact Ramsey solving with symmetric learning and a Lean-verified proof checker"
+repository = "https://github.com/lioncash3k6-ux/SymSAT-1.0"
+edition = "2021"
+
+[[bin]]
+name = "monster"
+path = "src/main.rs"
+
+[dependencies]
+
+[profile.release]
+opt-level = 3
+lto = "fat"
+codegen-units = 1
+panic = "abort"
+debug = 1
+
+[profile.dev]
+opt-level = 1

@@ -1,0 +1,36 @@
+CSDP 6.2.0
+Iter:  0 Ap: 0.00e+00 Pobj:  0.0000000e+00 Ad: 0.00e+00 Dobj:  0.0000000e+00 
+Iter:  1 Ap: 9.60e-01 Pobj: -7.0710010e+03 Ad: 7.34e-01 Dobj:  7.4113581e+00 
+Iter:  2 Ap: 9.14e-01 Pobj: -7.0467387e+03 Ad: 9.57e-01 Dobj:  1.0683043e+01 
+Iter:  3 Ap: 9.53e-01 Pobj: -7.0567536e+03 Ad: 9.48e-01 Dobj:  1.1773000e+01 
+Iter:  4 Ap: 9.10e-01 Pobj: -4.8706718e+03 Ad: 9.08e-01 Dobj:  1.5798945e+01 
+Iter:  5 Ap: 9.29e-01 Pobj: -9.0898513e+02 Ad: 9.05e-01 Dobj:  2.3721959e+01 
+Iter:  6 Ap: 9.21e-01 Pobj: -9.2823560e+01 Ad: 9.33e-01 Dobj:  2.3581831e+01 
+Iter:  7 Ap: 1.00e+00 Pobj: -4.6107773e+00 Ad: 9.50e-01 Dobj:  9.3820084e+00 
+Iter:  8 Ap: 1.00e+00 Pobj: -2.1443672e-01 Ad: 1.00e+00 Dobj:  3.9556315e-01 
+Iter:  9 Ap: 9.87e-01 Pobj: -1.7988125e-02 Ad: 1.00e+00 Dobj:  2.1553703e-02 
+Iter: 10 Ap: 1.00e+00 Pobj: -1.0306759e-02 Ad: 1.00e+00 Dobj:  1.7413390e-02 
+Iter: 11 Ap: 1.00e+00 Pobj: -4.0330344e-03 Ad: 9.78e-01 Dobj:  6.1861571e-03 
+Iter: 12 Ap: 4.24e-01 Pobj: -3.4664668e-03 Ad: 8.66e-01 Dobj:  4.6942551e-03 
+Iter: 13 Ap: 8.51e-01 Pobj: -2.1849579e-03 Ad: 8.86e-01 Dobj:  3.2489295e-03 
+Iter: 14 Ap: 1.00e+00 Pobj: -1.0727594e-03 Ad: 1.00e+00 Dobj:  1.3314627e-03 
+Iter: 15 Ap: 1.00e+00 Pobj: -5.3663506e-04 Ad: 1.00e+00 Dobj:  5.1624951e-04 
+Iter: 16 Ap: 1.00e+00 Pobj: -2.6529503e-04 Ad: 1.00e+00 Dobj:  1.8370465e-04 
+Iter: 17 Ap: 1.00e+00 Pobj: -1.4971675e-04 Ad: 1.00e+00 Dobj:  8.1670642e-05 
+Iter: 18 Ap: 1.00e+00 Pobj: -9.4055484e-05 Ad: 1.00e+00 Dobj:  3.8775482e-05 
+Iter: 19 Ap: 1.00e+00 Pobj: -4.8347205e-05 Ad: 1.00e+00 Dobj:  1.0052771e-05 
+Iter: 20 Ap: 6.15e-01 Pobj: -3.5286283e-05 Ad: 1.00e+00 Dobj:  3.5786150e-06 
+Iter: 21 Ap: 7.33e-01 Pobj: -2.3665804e-05 Ad: 1.00e+00 Dobj:  2.1051858e-06 
+Iter: 22 Ap: 1.00e+00 Pobj: -1.3403089e-05 Ad: 1.00e+00 Dobj:  6.0634081e-07 
+Iter: 23 Ap: 8.74e-01 Pobj: -5.1100614e-06 Ad: 1.00e+00 Dobj:  3.2707197e-07 
+Iter: 24 Ap: 1.00e+00 Pobj: -5.7735077e-07 Ad: 9.83e-01 Dobj:  7.3887834e-09 
+Iter: 25 Ap: 9.92e-01 Pobj: -3.0515177e-08 Ad: 9.62e-01 Dobj: -1.1647383e-10 
+Iter: 26 Ap: 9.58e-01 Pobj: -1.2927183e-09 Ad: 9.56e-01 Dobj: -1.0310186e-11 
+Success: SDP solved
+Primal objective value: -1.2927183e-09 
+Dual objective value: -1.0310186e-11 
+Relative primal infeasibility: 5.13e-12 
+Relative dual infeasibility: 7.10e-10 
+Real Relative Gap: 1.28e-09 
+XZ Relative Gap: 1.33e-09 
+DIMACS error measures: 5.13e-12 0.00e+00 5.50e-09 0.00e+00 1.28e-09 1.33e-09

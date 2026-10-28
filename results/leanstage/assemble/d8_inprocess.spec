@@ -1,0 +1,11 @@
+stage 8
+catA /home/ubuntu/cascade-solver-ramsey-v4-algebraic/v5/catalogs/r35/n8.g6
+catB /home/ubuntu/cascade-solver-ramsey-v4-algebraic/v5/catalogs/r44/n16.g6
+countA 179
+countB 2
+nA 15
+nB 2
+hintA /home/ubuntu/monster/results/leanstage/assemble/hintA_d8.txt
+hintB /home/ubuntu/monster/results/leanstage/assemble/hintB_d8.txt
+proofs /home/ubuntu/monster/results/leanstage/assemble/d8_proofs.txt
+threads 4

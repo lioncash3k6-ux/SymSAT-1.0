@@ -1,0 +1,7 @@
+
+═══ result ═══
+  d=8   pairs            358  done            358  UNSAT            358  SAT      0  certified            0
+  wall 2m15s  ·  3 pairs/s
+  UNSAT: every pair of every stage is refuted  ⇒  R(4,5) ≤ 25
+  conditional on: the degree argument (some vertex has even red degree, N odd), catalogue completeness (counts = McKay's table),
+  the pair encoder, and the solver for the 358 pairs not independently certified (certified: 0)

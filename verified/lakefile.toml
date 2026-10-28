@@ -1,0 +1,10 @@
+name = "MonsterVerified"
+version = "0.1.0"
+defaultTargets = ["checker"]
+
+[[lean_lib]]
+name = "MonsterVerified"
+
+[[lean_exe]]
+name = "checker"
+root = "Main"

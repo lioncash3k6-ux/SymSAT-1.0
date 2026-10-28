@@ -1,0 +1,8 @@
+{"task":1,"d":10,"fixed":1,"lo":28,"hi":29,"unsat":3392,"sat":0,"hits":0,"solves":1,"roots":0,"conflicts":745168,"nodes":3278693745,"embed":48096153,"scans":3926605,"secs":432.499,"checked":false,"worker":1}
+{"task":5,"d":10,"fixed":2,"lo":2025,"hi":2026,"unsat":1209,"sat":0,"hits":0,"solves":1,"roots":0,"conflicts":553465,"nodes":2637892885,"embed":39481886,"scans":3145131,"secs":344.253,"checked":false,"worker":1}
+{"task":0,"d":10,"fixed":0,"lo":1536,"hi":1537,"unsat":2460,"sat":0,"hits":0,"solves":1,"roots":0,"conflicts":5491606,"nodes":26214570361,"embed":322610234,"scans":32294741,"secs":5579.091,"checked":false,"worker":0}
+{"task":4,"d":10,"fixed":2,"lo":508,"hi":509,"unsat":2457,"sat":0,"hits":0,"solves":1,"roots":0,"conflicts":604007,"nodes":2462602328,"embed":29704754,"scans":3231646,"secs":464.645,"checked":false,"worker":0}
+{"task":8,"d":10,"fixed":5,"lo":3239,"hi":3240,"unsat":182,"sat":0,"hits":0,"solves":1,"roots":0,"conflicts":1347173,"nodes":7060919889,"embed":90691015,"scans":7673417,"secs":1288.110,"checked":false,"worker":0}
+{"task":3,"d":10,"fixed":1,"lo":3253,"hi":3254,"unsat":371,"sat":0,"hits":0,"solves":1,"roots":0,"conflicts":8445730,"nodes":30287666424,"embed":381093810,"scans":45410000,"secs":8643.622,"checked":false,"worker":3}
+{"task":2,"d":10,"fixed":1,"lo":711,"hi":712,"unsat":3127,"sat":0,"hits":0,"solves":1,"roots":0,"conflicts":11506727,"nodes":38111801405,"embed":490226210,"scans":61423518,"secs":13271.271,"checked":false,"worker":2}
+{"task":6,"d":10,"fixed":3,"lo":326,"hi":327,"unsat":2112,"sat":0,"hits":0,"solves":1,"roots":0,"conflicts":1707036,"nodes":6344174852,"embed":77475260,"scans":8920302,"secs":1862.022,"checked":false,"worker":2}

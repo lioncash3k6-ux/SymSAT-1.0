@@ -1,0 +1,30 @@
+CSDP 6.2.0
+Iter:  0 Ap: 0.00e+00 Pobj:  0.0000000e+00 Ad: 0.00e+00 Dobj:  0.0000000e+00 
+Iter:  1 Ap: 9.59e-01 Pobj: -5.7074487e+02 Ad: 8.23e-01 Dobj:  9.5897910e+00 
+Iter:  2 Ap: 9.01e-01 Pobj: -5.6099086e+02 Ad: 9.55e-01 Dobj:  1.2228622e+01 
+Iter:  3 Ap: 8.94e-01 Pobj: -3.5397519e+02 Ad: 9.08e-01 Dobj:  1.4347378e+01 
+Iter:  4 Ap: 1.00e+00 Pobj: -2.8587206e+01 Ad: 9.42e-01 Dobj:  1.5946353e+01 
+Iter:  5 Ap: 9.75e-01 Pobj: -1.2600804e+00 Ad: 9.57e-01 Dobj:  2.3372891e+00 
+Iter:  6 Ap: 9.84e-01 Pobj: -6.7671737e-02 Ad: 9.64e-01 Dobj:  1.9658123e-01 
+Iter:  7 Ap: 9.49e-01 Pobj: -1.0872868e-02 Ad: 1.00e+00 Dobj:  1.2732495e-02 
+Iter:  8 Ap: 1.00e+00 Pobj: -3.1063458e-03 Ad: 8.20e-01 Dobj:  9.6011729e-03 
+Iter:  9 Ap: 9.90e-01 Pobj: -1.8663484e-03 Ad: 1.00e+00 Dobj:  4.5749651e-03 
+Iter: 10 Ap: 1.00e+00 Pobj: -8.2433596e-04 Ad: 8.71e-01 Dobj:  2.4545291e-03 
+Iter: 11 Ap: 1.00e+00 Pobj: -4.3029790e-04 Ad: 1.00e+00 Dobj:  1.0804222e-03 
+Iter: 12 Ap: 1.00e+00 Pobj: -1.5421367e-04 Ad: 1.00e+00 Dobj:  5.5201013e-04 
+Iter: 13 Ap: 1.00e+00 Pobj: -8.3593248e-06 Ad: 1.00e+00 Dobj:  2.3320803e-04 
+Iter: 14 Ap: 9.88e-01 Pobj:  7.9163146e-05 Ad: 1.00e+00 Dobj:  1.8081248e-04 
+Iter: 15 Ap: 1.00e+00 Pobj:  1.1584494e-04 Ad: 1.00e+00 Dobj:  1.4849708e-04 
+Iter: 16 Ap: 1.00e+00 Pobj:  1.3151397e-04 Ad: 1.00e+00 Dobj:  1.4141972e-04 
+Iter: 17 Ap: 1.00e+00 Pobj:  1.3786482e-04 Ad: 1.00e+00 Dobj:  1.3947087e-04 
+Iter: 18 Ap: 1.00e+00 Pobj:  1.3907778e-04 Ad: 1.00e+00 Dobj:  1.3934065e-04 
+Iter: 19 Ap: 1.00e+00 Pobj:  1.3928995e-04 Ad: 1.00e+00 Dobj:  1.3931129e-04 
+Iter: 20 Ap: 9.59e-01 Pobj:  1.3930784e-04 Ad: 9.57e-01 Dobj:  1.3930872e-04 
+Success: SDP solved
+Primal objective value: 1.3930784e-04 
+Dual objective value: 1.3930872e-04 
+Relative primal infeasibility: 6.72e-13 
+Relative dual infeasibility: 1.72e-10 
+Real Relative Gap: 8.73e-10 
+XZ Relative Gap: 9.18e-10 
+DIMACS error measures: 6.72e-13 0.00e+00 6.59e-10 0.00e+00 8.73e-10 9.18e-10

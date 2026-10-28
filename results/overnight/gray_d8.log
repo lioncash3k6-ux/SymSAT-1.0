@@ -1,0 +1,38 @@
+[0.0s] 0/358 pairs (0.00%)  0 pairs/s  0.0 conflicts/s  ETA 4143518.5d  SAT 0  errors 0
+[10.0s] 0/358 pairs (0.00%)  0 pairs/s  1329 conflicts/s  ETA 4143518.5d  SAT 0  errors 0
+[20.0s] 0/358 pairs (0.00%)  0 pairs/s  1268 conflicts/s  ETA 4143518.5d  SAT 0  errors 0
+[30.1s] 0/358 pairs (0.00%)  0 pairs/s  1209 conflicts/s  ETA 4143518.5d  SAT 0  errors 0
+[40.1s] 0/358 pairs (0.00%)  0 pairs/s  1115 conflicts/s  ETA 4143518.5d  SAT 0  errors 0
+[50.1s] 0/358 pairs (0.00%)  0 pairs/s  1095 conflicts/s  ETA 4143518.5d  SAT 0  errors 0
+[1m00s] 0/358 pairs (0.00%)  0 pairs/s  1096 conflicts/s  ETA 4143518.5d  SAT 0  errors 0
+[1m10s] 0/358 pairs (0.00%)  0 pairs/s  1105 conflicts/s  ETA 4143518.5d  SAT 0  errors 0
+[1m20s] 0/358 pairs (0.00%)  0 pairs/s  1142 conflicts/s  ETA 4143518.5d  SAT 0  errors 0
+[1m30s] 0/358 pairs (0.00%)  0 pairs/s  1113 conflicts/s  ETA 4143518.5d  SAT 0  errors 0
+[1m40s] 0/358 pairs (0.00%)  0 pairs/s  1062 conflicts/s  ETA 4143518.5d  SAT 0  errors 0
+[1m50s] 0/358 pairs (0.00%)  0 pairs/s  1019 conflicts/s  ETA 4143518.5d  SAT 0  errors 0
+[2m00s] 0/358 pairs (0.00%)  0 pairs/s  1004 conflicts/s  ETA 4143518.5d  SAT 0  errors 0
+[2m10s] 0/358 pairs (0.00%)  0 pairs/s  955 conflicts/s  ETA 4143518.5d  SAT 0  errors 0
+[2m20s] 0/358 pairs (0.00%)  0 pairs/s  928 conflicts/s  ETA 4143518.5d  SAT 0  errors 0
+[2m30s] 0/358 pairs (0.00%)  0 pairs/s  911 conflicts/s  ETA 4143518.5d  SAT 0  errors 0
+[2m40s] 0/358 pairs (0.00%)  0 pairs/s  890 conflicts/s  ETA 4143518.5d  SAT 0  errors 0
+[2m50s] 0/358 pairs (0.00%)  0 pairs/s  860 conflicts/s  ETA 4143518.5d  SAT 0  errors 0
+[3m00s] 0/358 pairs (0.00%)  0 pairs/s  825 conflicts/s  ETA 4143518.5d  SAT 0  errors 0
+[3m10s] 0/358 pairs (0.00%)  0 pairs/s  799 conflicts/s  ETA 4143518.5d  SAT 0  errors 0
+[3m20s] 0/358 pairs (0.00%)  0 pairs/s  805 conflicts/s  ETA 4143518.5d  SAT 0  errors 0
+[3m30s] 0/358 pairs (0.00%)  0 pairs/s  763 conflicts/s  ETA 4143518.5d  SAT 0  errors 0
+[3m40s] 0/358 pairs (0.00%)  0 pairs/s  748 conflicts/s  ETA 4143518.5d  SAT 0  errors 0
+[3m50s] 0/358 pairs (0.00%)  0 pairs/s  754 conflicts/s  ETA 4143518.5d  SAT 0  errors 0
+[4m00s] 0/358 pairs (0.00%)  0 pairs/s  773 conflicts/s  ETA 4143518.5d  SAT 0  errors 0
+[4m10s] 0/358 pairs (0.00%)  0 pairs/s  686 conflicts/s  ETA 1h33m  SAT 0  errors 0
+[4m20s] 0/358 pairs (0.00%)  0 pairs/s  611 conflicts/s  ETA 48m36s  SAT 0  errors 0
+[4m30s] 0/358 pairs (0.00%)  0 pairs/s  519 conflicts/s  ETA 50m28s  SAT 0  errors 0
+[4m40s] 0/358 pairs (0.00%)  0 pairs/s  494 conflicts/s  ETA 52m20s  SAT 0  errors 0
+[4m50s] 0/358 pairs (0.00%)  0 pairs/s  445 conflicts/s  ETA 54m12s  SAT 0  errors 0
+[5m00s] 0/358 pairs (0.00%)  0 pairs/s  419 conflicts/s  ETA 56m05s  SAT 0  errors 0
+[5m10s] 0/358 pairs (0.00%)  0 pairs/s  408 conflicts/s  ETA 57m57s  SAT 0  errors 0
+
+thread 'w01' (44575) panicked at src/glue.rs:1133:37:
+index out of bounds: the len is 2 but the index is 2
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+Command terminated by signal 6
+324.39 s wall

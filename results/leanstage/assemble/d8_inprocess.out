@@ -1,0 +1,38 @@
+c stage d=8: catalogue /home/ubuntu/cascade-solver-ramsey-v4-algebraic/v5/catalogs/r35/n8.g6 x /home/ubuntu/cascade-solver-ramsey-v4-algebraic/v5/catalogs/r44/n16.g6, units 15 x 2, threads 4
+c decoded 179 A-graphs (K_8) and 2 B-graphs (K_16) in 0 ms
+s VERIFIED LEMMA results/leanstage/d8keep/units/u0_0.slrat
+s VERIFIED LEMMA results/leanstage/d8keep/units/u0_1.slrat
+s VERIFIED LEMMA results/leanstage/d8keep/units/u10_0.slrat
+s VERIFIED LEMMA results/leanstage/d8keep/units/u10_1.slrat
+s VERIFIED LEMMA results/leanstage/d8keep/units/u11_0.slrat
+s VERIFIED LEMMA results/leanstage/d8keep/units/u11_1.slrat
+s VERIFIED LEMMA results/leanstage/d8keep/units/u12_0.slrat
+s VERIFIED LEMMA results/leanstage/d8keep/units/u12_1.slrat
+s VERIFIED LEMMA results/leanstage/d8keep/units/u13_0.slrat
+s VERIFIED LEMMA results/leanstage/d8keep/units/u13_1.slrat
+s VERIFIED LEMMA results/leanstage/d8keep/units/u14_0.slrat
+s VERIFIED LEMMA results/leanstage/d8keep/units/u14_1.slrat
+s VERIFIED LEMMA results/leanstage/d8keep/units/u1_0.slrat
+s VERIFIED LEMMA results/leanstage/d8keep/units/u1_1.slrat
+s VERIFIED LEMMA results/leanstage/d8keep/units/u2_0.slrat
+s VERIFIED LEMMA results/leanstage/d8keep/units/u2_1.slrat
+s VERIFIED LEMMA results/leanstage/d8keep/units/u3_0.slrat
+s VERIFIED LEMMA results/leanstage/d8keep/units/u3_1.slrat
+s VERIFIED LEMMA results/leanstage/d8keep/units/u4_0.slrat
+s VERIFIED LEMMA results/leanstage/d8keep/units/u4_1.slrat
+s VERIFIED LEMMA results/leanstage/d8keep/units/u5_0.slrat
+s VERIFIED LEMMA results/leanstage/d8keep/units/u5_1.slrat
+s VERIFIED LEMMA results/leanstage/d8keep/units/u6_0.slrat
+s VERIFIED LEMMA results/leanstage/d8keep/units/u6_1.slrat
+s VERIFIED LEMMA results/leanstage/d8keep/units/u7_0.slrat
+s VERIFIED LEMMA results/leanstage/d8keep/units/u7_1.slrat
+s VERIFIED LEMMA results/leanstage/d8keep/units/u8_0.slrat
+s VERIFIED LEMMA results/leanstage/d8keep/units/u8_1.slrat
+s VERIFIED LEMMA results/leanstage/d8keep/units/u9_0.slrat
+s VERIFIED LEMMA results/leanstage/d8keep/units/u9_1.slrat
+c 30 lemmas verified in this process, 0 failed, 910214 ms
+c coverage check: 179 x 2 pairs in 26 ms
+s STAGE 8 REFUTED: StageRefuted (catalogueFrom files) 8 by theorem MonsterVerified.stageRefuted_of_verified (every lemma verified in this process; no hypothesis beyond the catalogue files)
+c stages refuted: [8]; the theorem r45_le_25_of_stages needs [8, 10, 12]
+MAXRSS_KB 135008 wall 910.34 s user 902.95
+exit=0

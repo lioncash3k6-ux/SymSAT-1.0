@@ -1,0 +1,10 @@
+{
+  "cmdline": "/home/ubuntu/monster/target/release/monster glue --s 4 --t 5 --n 25 --d 10 --covers results/covers_r45 --gray-a 99 --gray-b 6 --mode unit --unit-budget 18446744073709551615 --sample 4 --seed 1 --workers 4 --sched static --check-every 0 --chunk 1 --quiet --out results/ab/r45d10_allgrayA",
+  "machine": "Intel Xeon E3-12xx v2 (Ivy Bridge, IBRS) x16 [\"popcnt\", \"avx\"] 65838984 kB",
+  "config": "Config { s: 4, t: 5, n: 25, route: Parity, degrees: Some([10]), workers: 4, chunk: 1, mode: Unit, minimize: 0, check_every: 0, sample: Some(4), seed: 1, catalogs: \"/home/ubuntu/cascade-solver-ramsey-v4-algebraic/v5/catalogs\", out: Some(\"results/ab/r45d10_allgrayA\"), resume: false, cache_cap: 50000, stop_on_sat: false, quiet: true, max_pairs_per_task: None, covers: Some(\"results/covers_r45\"), gray_a: 99, gray_b: 6, unit_budget: 18446744073709551615, units: None, degree_axioms: false, book_axioms: false, vivify: false, cube_budget: 0, stable: false, pat_lbd: 12, books: true, one_sided: false, sched_static: true }",
+  "catalogues": [
+    {"file": "/home/ubuntu/cascade-solver-ramsey-v4-algebraic/v5/catalogs/r35/n10.g6", "graphs": 313, "mckay": Some(313), "sha256": "93409a39e04f9bdba572e4e56cf8b478443124522e3e20a449eae82e8467bc3d"},
+    {"file": "/home/ubuntu/cascade-solver-ramsey-v4-algebraic/v5/catalogs/r44/n14.g6", "graphs": 130816, "mckay": Some(130816), "sha256": "39049cc410a8a9d9691f16ab7040c0d326dde2052079679a8ab9f5f17e887407"}
+  ],
+  "notes": ["covers: results/covers_r45/c35_10_g99.txt (1 gens) x results/covers_r45/c44_14_g6.txt (4157 gens) = 4157 units"]
+}

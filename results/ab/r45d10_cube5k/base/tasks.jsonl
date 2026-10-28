@@ -1,0 +1,16 @@
+{"task":1,"d":10,"fixed":1,"lo":28,"hi":29,"unsat":3392,"sat":0,"hits":0,"solves":1,"roots":3392,"conflicts":683802,"nodes":0,"embed":0,"scans":0,"secs":56.003,"checked":false,"worker":1}
+{"task":4,"d":10,"fixed":2,"lo":508,"hi":509,"unsat":2457,"sat":0,"hits":0,"solves":1,"roots":2457,"conflicts":1107143,"nodes":0,"embed":0,"scans":0,"secs":118.909,"checked":false,"worker":1}
+{"task":7,"d":10,"fixed":3,"lo":2567,"hi":2568,"unsat":627,"sat":0,"hits":0,"solves":1,"roots":627,"conflicts":1637085,"nodes":0,"embed":0,"scans":0,"secs":222.002,"checked":false,"worker":1}
+{"task":10,"d":10,"fixed":7,"lo":3785,"hi":3786,"unsat":34,"sat":0,"hits":0,"solves":1,"roots":34,"conflicts":1310177,"nodes":0,"embed":0,"scans":0,"secs":135.427,"checked":false,"worker":1}
+{"task":13,"d":10,"fixed":13,"lo":3857,"hi":3858,"unsat":8,"sat":0,"hits":0,"solves":1,"roots":8,"conflicts":254986,"nodes":0,"embed":0,"scans":0,"secs":8.597,"checked":false,"worker":1}
+{"task":0,"d":10,"fixed":0,"lo":1536,"hi":1537,"unsat":2460,"sat":0,"hits":0,"solves":1,"roots":2460,"conflicts":3674086,"nodes":0,"embed":0,"scans":0,"secs":692.201,"checked":false,"worker":0}
+{"task":2,"d":10,"fixed":1,"lo":711,"hi":712,"unsat":3127,"sat":0,"hits":0,"solves":1,"roots":3127,"conflicts":6313437,"nodes":0,"embed":0,"scans":0,"secs":1609.787,"checked":false,"worker":2}
+{"task":5,"d":10,"fixed":2,"lo":2025,"hi":2026,"unsat":1209,"sat":0,"hits":0,"solves":1,"roots":1209,"conflicts":1049892,"nodes":0,"embed":0,"scans":0,"secs":76.724,"checked":false,"worker":2}
+{"task":8,"d":10,"fixed":5,"lo":3239,"hi":3240,"unsat":182,"sat":0,"hits":0,"solves":1,"roots":182,"conflicts":3528820,"nodes":0,"embed":0,"scans":0,"secs":539.192,"checked":false,"worker":2}
+{"task":11,"d":10,"fixed":8,"lo":138,"hi":139,"unsat":704,"sat":0,"hits":0,"solves":1,"roots":704,"conflicts":2671577,"nodes":0,"embed":0,"scans":0,"secs":551.265,"checked":false,"worker":2}
+{"task":3,"d":10,"fixed":1,"lo":3253,"hi":3254,"unsat":371,"sat":0,"hits":0,"solves":1,"roots":371,"conflicts":7169506,"nodes":0,"embed":0,"scans":0,"secs":2362.240,"checked":false,"worker":0}
+{"task":6,"d":10,"fixed":3,"lo":326,"hi":327,"unsat":2112,"sat":0,"hits":0,"solves":1,"roots":2112,"conflicts":1394608,"nodes":0,"embed":0,"scans":0,"secs":168.494,"checked":false,"worker":0}
+{"task":9,"d":10,"fixed":7,"lo":2559,"hi":2560,"unsat":323,"sat":0,"hits":0,"solves":1,"roots":323,"conflicts":2635977,"nodes":0,"embed":0,"scans":0,"secs":451.193,"checked":false,"worker":0}
+{"task":14,"d":10,"fixed":14,"lo":1249,"hi":1250,"unsat":141,"sat":0,"hits":0,"solves":1,"roots":141,"conflicts":4975924,"nodes":0,"embed":0,"scans":0,"secs":992.379,"checked":false,"worker":2}
+{"task":12,"d":10,"fixed":8,"lo":1487,"hi":1488,"unsat":462,"sat":0,"hits":0,"solves":1,"roots":462,"conflicts":17345145,"nodes":0,"embed":0,"scans":0,"secs":7000.652,"checked":false,"worker":0}
+{"task":15,"d":10,"fixed":15,"lo":1042,"hi":1043,"unsat":104,"sat":0,"hits":0,"solves":1,"roots":104,"conflicts":16973094,"nodes":0,"embed":0,"scans":0,"secs":5788.650,"checked":false,"worker":0}
