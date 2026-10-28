@@ -198,3 +198,94 @@ def parseLineFast (line : String) : Option (Option Step) :=
     else parseLine line
 
 end MonsterVerified
+
+namespace MonsterVerified
+
+/-! ## Chunked line reader (untrusted I/O plumbing)
+
+`IO.FS.Handle.getLine` builds a C++ string byte by byte, validates UTF-8 and allocates a `String` per line (13% of a
+check, perf 2026-10-28). `LineReader` reads 1 MB chunks and hands out each line as a `ByteArray` slice, which
+`parseLineFast` scans directly (`parseLineBytes`); only the rare non-hot line kinds are turned into a `String`. -/
+
+structure LineReader where
+  h : IO.FS.Handle
+  buf : ByteArray := ByteArray.empty
+  pos : Nat := 0
+  eof : Bool := false
+
+/-- the next line (without its newline) as a byte slice, or `none` at end of file -/
+partial def LineReader.next (r : LineReader) : IO (Option ByteArray × LineReader) := do
+  let mut r := r
+  repeat
+    -- a newline in the buffer?
+    let mut i := r.pos
+    let n := r.buf.size
+    while i < n && r.buf[i]! != 10 do
+      i := i + 1
+    if i < n then
+      let line := r.buf.extract r.pos i
+      return (some line, { r with pos := i + 1 })
+    if r.eof then
+      if r.pos < n then
+        let line := r.buf.extract r.pos n
+        return (some line, { r with pos := n })
+      return (none, r)
+    let chunk ← r.h.read (USize.ofNat (1 <<< 20))
+    if chunk.isEmpty then
+      r := { r with eof := true }
+    else
+      r := { r with buf := (r.buf.extract r.pos n) ++ chunk, pos := 0 }
+  return (none, r)
+
+/-- naturals up to a `0` (consumed), in order; `none` on a negative or a missing `0` -/
+partial def readNatsUntilZero (bs : ByteArray) (i : Nat) (acc : List Nat) : Option (List Nat × Nat) :=
+  match readInt bs i with
+  | some (0, k) => some (acc.reverse, k)
+  | some (v, k) => if v < 0 then none else readNatsUntilZero bs k (v.toNat :: acc)
+  | none => none
+
+def parseLineBytes (bs : ByteArray) : Option (Option Step) :=
+  let i := skipSpaces bs 0
+  if i ≥ bs.size then some none
+  else
+    let c := bs[i]!
+    let endTok (j : Nat) : Bool := j ≥ bs.size || bs[j]! == 32 || bs[j]! == 10 || bs[j]! == 13
+    let fallback := fun () => parseLine (String.fromUTF8! bs)
+    if c == 99 && endTok (i + 1) then some none
+    else if c == 117 && endTok (i + 1) then
+      match readInt bs (i + 1) with
+      | some (k, j) =>
+        if k < 0 then none else
+        let j' := skipSpaces bs j
+        if j' < bs.size && bs[j']! == 100 && endTok (j' + 1) then
+          match readNatsUntilZero bs (j' + 1) [] with
+          | some (ids, _) => some (some (.asmDel k.toNat ids))
+          | none => none
+        else
+          match readInt bs j with
+          | some (id, j2) =>
+            if id < 0 then none else
+            match readUntilZero bs j2 (Array.mkEmpty 32) with
+            | some (lits, j3) =>
+              match readNatsUntilZero bs j3 [] with
+              | some (hints, _) => some (some (.asm k.toNat id.toNat lits.toList hints))
+              | none => none
+            | none => none
+          | none => fallback ()
+      | none => fallback ()
+    else if 48 ≤ c && c ≤ 57 then
+      match readInt bs i with
+      | some (id, j) =>
+        let j' := skipSpaces bs j
+        if id ≥ 0 && j' < bs.size && ((48 ≤ bs[j']! && bs[j']! ≤ 57) || bs[j']! == 45) then
+          match readUntilZero bs j (Array.mkEmpty 32) with
+          | some (lits, j3) =>
+            match readNatsUntilZero bs j3 [] with
+            | some (hints, _) => some (some (.add id.toNat lits.toList hints))
+            | none => none
+          | none => none
+        else fallback ()
+      | none => fallback ()
+    else fallback ()
+
+end MonsterVerified

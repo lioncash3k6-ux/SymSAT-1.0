@@ -250,25 +250,43 @@ theorem alookA_setGrow (a : Array UInt8) (v w : Nat) (b : Bool) :
       · simp only [h2, ite_true]; rfl
       · simp only [h2, ite_false]
 
-/-- the array of an assignment list (first entry wins: fold from the right) -/
-def toArr (α : Assign) : Array UInt8 := α.foldr (fun p a => setGrow a p.1 (encode p.2)) #[]
+/-- the largest variable of an assignment list (so the array is allocated once; growth in `setGrow` then never runs) -/
+def maxVar (α : Assign) : Nat := α.foldl (fun m p => max m p.1) 0
 
-theorem alookA_toArr : ∀ (α : Assign) (v : Nat), alookA (toArr α) v = alook α v
-  | [], v => by simp [toArr, alookA, alook]
-  | p :: α, v => by
-    show alookA (setGrow (toArr α) p.1 (encode p.2)) v = alook (p :: α) v
-    rw [alookA_setGrow, alookA_toArr α v]
-    by_cases h : p.1 = v
-    · subst h
-      simp [alook]
-    · have hb : (p.1 == v) = false := by simp [h]
-      simp [h, alook, List.find?_cons, hb]
+theorem alookA_replicate (k v : Nat) : alookA (Array.replicate k 0) v = none := by
+  unfold alookA
+  rw [Array.getElem?_replicate]
+  by_cases h : v < k
+  · simp only [h, ite_true]; rfl
+  · simp only [h, ite_false]
+
+/-- the array of an assignment list: allocated once at the largest variable, then filled from the right so that the
+FIRST entry of a variable wins, like `alook` -/
+def toArr (α : Assign) : Array UInt8 :=
+  α.foldr (fun p a => setGrow a p.1 (encode p.2)) (Array.replicate (maxVar α + 1) 0)
+
+/-- `a` represents `α`: the same lookup on every variable -/
+def Rep (a : Array UInt8) (α : Assign) : Prop := ∀ w, alookA a w = alook α w
+
+theorem rep_foldr (base : Array UInt8) (hb : ∀ w, alookA base w = none) :
+    ∀ (β : Assign), Rep (β.foldr (fun q a => setGrow a q.1 (encode q.2)) base) β
+  | [] => fun w => by simp only [List.foldr, alook, List.find?_nil, Option.map_none]; exact hb w
+  | q :: β => fun w => by
+    show alookA (setGrow (β.foldr (fun q a => setGrow a q.1 (encode q.2)) base) q.1 (encode q.2)) w = alook (q :: β) w
+    rw [alookA_setGrow, rep_foldr base hb β w]
+    by_cases h : q.1 = w
+    · subst h; simp [alook]
+    · have hb' : (q.1 == w) = false := by simp [h]
+      simp [h, alook, hb']
+
+theorem rep_toArr (α : Assign) : Rep (toArr α) α :=
+  rep_foldr _ (fun w => alookA_replicate _ w) α
 
 def lstatA (a : Array UInt8) (l : Int) : Option Bool :=
   (alookA a l.natAbs).map (fun b => if l > 0 then b else !b)
 
-theorem lstatA_toArr (α : Assign) (l : Int) : lstatA (toArr α) l = lstat α l := by
-  unfold lstatA lstat; rw [alookA_toArr]
+theorem lstatA_rep {a : Array UInt8} {α : Assign} (h : Rep a α) (l : Int) : lstatA a l = lstat α l := by
+  unfold lstatA lstat; rw [h]
 
 def evalHA (a : Array UInt8) : List Int → HRes
   | [] => .conflict
@@ -283,15 +301,24 @@ def evalHA (a : Array UInt8) : List Int → HRes
       | .unit _ => .many
       | .many => .many
 
-theorem evalHA_toArr (α : Assign) : ∀ (H : List Int), evalHA (toArr α) H = evalH α H
+theorem evalHA_rep {a : Array UInt8} {α : Assign} (h : Rep a α) : ∀ (H : List Int), evalHA a H = evalH α H
   | [] => rfl
   | l :: ls => by
     unfold evalHA evalH
-    rw [lstatA_toArr, evalHA_toArr α ls]
+    rw [lstatA_rep h, evalHA_rep h ls]
 
 def assignTrueA (a : Array UInt8) (l : Int) : Array UInt8 := setGrow a l.natAbs (encode (decide (l > 0)))
 
-theorem toArr_assignTrue (α : Assign) (l : Int) : toArr (assignTrue α l) = assignTrueA (toArr α) l := rfl
+theorem rep_assignTrue {a : Array UInt8} {α : Assign} (h : Rep a α) (l : Int) :
+    Rep (assignTrueA a l) (assignTrue α l) := by
+  intro w
+  unfold assignTrueA assignTrue
+  rw [alookA_setGrow]
+  by_cases hw : l.natAbs = w
+  · subst hw; simp [alook]
+  · have hb : (l.natAbs == w) = false := by simp [hw]
+    rw [h w]
+    simp [hw, alook, hb]
 
 def rupA (get : Nat → Option (List Int)) : Array UInt8 → List Nat → Bool
   | _, [] => false
@@ -304,22 +331,19 @@ def rupA (get : Nat → Option (List Int)) : Array UInt8 → List Nat → Bool
       | .unit l => rupA get (assignTrueA a l) hs
       | _ => false
 
-theorem rupA_toArr (get : Nat → Option (List Int)) : ∀ (α : Assign) (hs : List Nat),
-    rupA get (toArr α) hs = rup get α hs
-  | _, [] => rfl
-  | α, h :: hs => by
+theorem rupA_rep (get : Nat → Option (List Int)) : ∀ (hs : List Nat) (a : Array UInt8) (α : Assign), Rep a α →
+    rupA get a hs = rup get α hs
+  | [], _, _, _ => rfl
+  | h :: hs, a, α, hr => by
     unfold rupA rup
     cases get h with
     | none => rfl
     | some H =>
       simp only
-      rw [evalHA_toArr]
+      rw [evalHA_rep hr]
       cases evalH α H with
       | conflict => rfl
-      | unit l =>
-        show rupA get (assignTrueA (toArr α) l) hs = rup get (assignTrue α l) hs
-        rw [← toArr_assignTrue]
-        exact rupA_toArr get (assignTrue α l) hs
+      | unit l => exact rupA_rep get hs _ _ (rep_assignTrue hr l)
       | sat => rfl
       | many => rfl
 
@@ -327,6 +351,6 @@ def rupFast (get : Nat → Option (List Int)) (α : Assign) (hs : List Nat) : Bo
 
 @[csimp] theorem rup_eq_rupFast : @rup = @rupFast := by
   funext get α hs
-  exact (rupA_toArr get α hs).symm
+  exact (rupA_rep get hs (toArr α) α (rep_toArr α)).symm
 
 end MonsterVerified

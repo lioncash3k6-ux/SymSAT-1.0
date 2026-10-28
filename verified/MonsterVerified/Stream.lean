@@ -14,16 +14,19 @@ namespace MonsterVerified
 
 structure OKSt (s t n : Nat) where
   st : St
+  /-- the edge table, built once (`stepOK` used to rebuild `edgeTable n` on every step; measured 2026-10-28) -/
+  E : Edges
+  hE : E = edgeTable n
   ok : StOK s t n (edgeTable n) st
 
 def initOK (s t n : Nat) : Option (OKSt s t n) :=
   match ho : originals s t n (edgeTable n) with
-  | some Cs => some ⟨⟨pushAll #[none] Cs, false, #[], #[], []⟩, init_ok ho⟩
+  | some Cs => some ⟨⟨pushAll #[none] Cs, false, #[], #[], []⟩, edgeTable n, rfl, init_ok ho⟩
   | none => none
 
 def stepOK {s t n : Nat} (x : OKSt s t n) (step : Step) : Option (OKSt s t n) :=
-  match h : stepFn s t n (edgeTable n) x.st step with
-  | some st' => some ⟨st', stepFn_ok x.ok h⟩
+  match h : stepFn s t n x.E x.st step with
+  | some st' => some ⟨st', x.E, x.hE, stepFn_ok x.ok (by rw [x.hE] at h; exact h)⟩
   | none => none
 
 /-- every pure clause of the main database of a reachable state holds in every good colouring -/

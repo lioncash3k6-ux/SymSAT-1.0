@@ -1181,3 +1181,32 @@ version 1.0.0. Sharding to other machines in one command: `scripts/bootstrap.sh`
 Lean, clones the public repo and the catalogue repo, builds, starts `unit-lean-stage --shard I/N`), the 57 MB bundle
 with the checker for toolchain-free x86-64 boxes, and `monster merge-shards --out DIR SHARD...` to merge the shards'
 `verified.jsonl` and record files. The private repo `SymSAT` stays the working repo (full history, chats, snapshots).
+
+### 2026-10-28 ~13:40: where a Lean lemma check really spends its time, and −34% from four allocation cuts
+Method: `scripts/bench_checker.sh BIN PROOF RUNS` (min user CPU over runs; wall time on this loaded box varies ±25%,
+the min of user time ±8%), ablation binaries, and `perf` (run as root). 20 MB d=10 unit proof (113k steps):
+
+| checker | lemma check | parse only | check part |
+|---|---|---|---|
+| this morning (list assignment, `splitOn` parser) | 6.15 s wall | 3.36 | 2.8 |
+| fast parser + array assignment (`rupFast`), start of this pass | 2.95 | 0.61 | 2.34 |
+| + edge table cached in `OKSt` | 2.03 | 0.59 | 1.44 |
+| + chunked byte reader, preallocated assignment, `getCFast`, presized parse buffers | **1.92–1.98** | 0.45 | 1.47 |
+
+Findings (perf, min-of-4 benches):
+- **Hint evaluation ("clause evaluation over linked lists") was only ~0.5 s of 2.95 s** (ablation: `rup` replaced by
+  `true` still took 2.55 s). The guess that it was 30% of the Lean half was wrong; the list representation of
+  clauses is not the lever and the storage refactor was not done.
+- **`stepOK` rebuilt `edgeTable n` (a 301-entry array) on every step: 0.9 s of 2.95 s.** Fixed by carrying the table
+  in `OKSt` with `hE : E = edgeTable n` (Stream.lean); the theorems are unchanged.
+- Allocation churn is a third of the run (`lean_alloc_small_object_core` 12–14%, `dec_ref` 8–9%, `mi_free` 7–8%).
+  `IO.FS.Handle.getLine` builds a C++ string byte by byte and validates UTF-8 (≈8%): replaced by `LineReader`
+  (1 MB chunks, byte slices, `parseLineBytes`; Parse.lean). `getC` allocated `some (some C)` per hint: `getCFast`
+  via `Array.getD`, proved equal (`@[csimp] getC_eq_getCFast`). The assignment array grew by appends: now allocated
+  once at `maxVar α + 1` (`rupA_rep` proves the array form against any array that represents the list).
+- The one-time reduction of the 65,780 originals under the unit's assumption (`reduceUnder`, 8–11%) is a fixed
+  ~0.2 s per unit and does not matter at 70 s per unit.
+- Tried and rejected with the harness: scalar literal codes instead of `Option Bool` (check part 2.71 vs 2.34 s).
+Axioms of `check_sound`, `getC_eq_getCFast`, `rup_eq_rupFast`, `stageRefuted_of_verified`: the standard three; 39 + 6
+tests and the 20 lift mutants pass. On the 332 MB unit (0,3459): 27.7 s user (59 s wall this morning). The running d=10
+stage was switched to this checker at 13:45. Lean is now ~0.4x the solve CPU per hard d=10 unit.

@@ -2,30 +2,42 @@ import MonsterVerified
 
 open MonsterVerified
 
-/-- Stream the proof lines of `h` through `stepOK`, one line at a time (the text is never held as a whole; the
-state carries its invariant, see Stream.lean). `none` on the first line that fails to parse or to check.
-Written as a tail-recursive function with the state as an owned argument: a `repeat`/`let mut` loop shares the
-state between iterations and then every step copies the live database (measured: 13x slower). -/
-partial def runStream {s t n : Nat} (h : IO.FS.Handle) (x : OKSt s t n) : IO (Option (OKSt s t n)) := do
-  let line ← h.getLine
-  if line.isEmpty then return some x
-  match parseLineFast line with
+/-- Stream the proof lines through `stepOK`, one line at a time (the text is never held as a whole; the state carries
+its invariant, see Stream.lean). Lines come from a `LineReader` (1 MB chunks, byte slices; Parse.lean) and are parsed
+by `parseLineBytes`. `none` on the first line that fails to parse or to check. Tail recursive with the state as an
+owned argument: a `let mut` loop shares the state between iterations and every step then copies the live database
+(measured: 13x slower). -/
+partial def runStream {s t n : Nat} (r : LineReader) (x : OKSt s t n) : IO (Option (OKSt s t n)) := do
+  let (line?, r) ← r.next
+  match line? with
+  | none => return some x
+  | some line =>
+    match parseLineBytes line with
+    | none => return none
+    | some none => runStream r x
+    | some (some step) =>
+      match stepOK x step with
+      | some x' => runStream r x'
+      | none => return none
+
+/-- open a proof file: the reader positioned after the header, and the header's (s, t, n) -/
+def openProof (path : System.FilePath) : IO (Option ((Nat × Nat × Nat) × LineReader)) := do
+  let h ← IO.FS.Handle.mk path .read
+  let (hdr?, r) ← ({ h := h } : LineReader).next
+  match hdr? with
   | none => return none
-  | some none => runStream h x
-  | some (some step) =>
-    match stepOK x step with
-    | some x' => runStream h x'
+  | some hdr =>
+    match parseHeader (String.fromUTF8! hdr) with
+    | some stn => return some (stn, r)
     | none => return none
 
 /-- one file of batch lemma mode: streamed check against F(s,t,n) (the header must match); `none` if the header is
 wrong, a line fails, or the last main clause is not pure -/
 def checkLemmaFile (s t n : Nat) (x0 : OKSt s t n) (path : System.FilePath) : IO (Option (Verified s t n)) := do
-  let h ← IO.FS.Handle.mk path .read
-  let hdr ← h.getLine
-  match parseHeader hdr with
-  | some (s', t', n') =>
+  match ← openProof path with
+  | some ((s', t', n'), r) =>
     if s' == s && t' == t && n' == n then
-      match ← runStream h x0 with
+      match ← runStream r x0 with
       | some x => return x.verified
       | none => return none
     else return none
@@ -229,15 +241,13 @@ def main (args : List String) : IO UInt32 := do
         IO.println "s NOT VERIFIED"; return 1
   | ["--lemma", path] =>
     -- lemma mode, streaming: every step must check; the last main clause is reported (no empty clause required)
-    let h ← IO.FS.Handle.mk path .read
-    let hdr ← h.getLine
-    match parseHeader hdr with
+    match ← openProof path with
     | none => IO.println "s PARSE ERROR (header)"; return 1
-    | some (s, t, n) =>
+    | some ((s, t, n), r) =>
       match initOK s t n with
       | none => IO.println "s NOT VERIFIED (no formula)"; return 1
       | some x0 =>
-        match ← runStream h x0 with
+        match ← runStream r x0 with
         | none => IO.println "s NOT VERIFIED"; return 1
         | some x =>
           if x.st.done then
@@ -253,20 +263,25 @@ def main (args : List String) : IO UInt32 := do
             return 0
   | ["--assemble", spec] => assembleMain spec
   | ["--parse", path] =>
-    -- timing aid: parse every line (no checking), report the line count; measures the parser's share of a check
-    let h ← IO.FS.Handle.mk path .read
-    let _ ← h.getLine
-    let mut n := 0
-    let mut bad := 0
-    repeat
-      let line ← h.getLine
-      if line.isEmpty then break
-      match parseLineFast line with
-      | some (some _) => n := n + 1
-      | some none => pure ()
-      | none => bad := bad + 1
-    IO.println s!"c parsed {n} steps, {bad} bad lines"
-    return 0
+    -- timing aid: read and parse every line (no checking); measures the reader + parser share of a check
+    match ← openProof path with
+    | none => IO.println "s PARSE ERROR (header)"; return 1
+    | some (_, r0) =>
+      let mut r := r0
+      let mut n := 0
+      let mut bad := 0
+      repeat
+        let (line?, r') ← r.next
+        r := r'
+        match line? with
+        | none => break
+        | some line =>
+          match parseLineBytes line with
+          | some (some _) => n := n + 1
+          | some none => pure ()
+          | none => bad := bad + 1
+      IO.println s!"c parsed {n} steps, {bad} bad lines"
+      return 0
   | "--lemmas" :: list :: rest =>
     -- batch lemma mode: one SLRAT path per line of `list`, all over the (s,t,n) of the first file, verified one
     -- after another in this process (one file's live databases at a time); `--delete` removes each verified file

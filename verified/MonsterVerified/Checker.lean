@@ -33,6 +33,16 @@ abbrev DB := Array (Option (List Int))
 
 def getC (db : DB) (i : Nat) : Option (List Int) := (db[i]?).join
 
+/-- the same lookup without the intermediate `some (some C)` (`Array.getD`); the compiler uses it for `getC` through
+the proved `csimp` equality (one allocation less per hint; measured 2026-10-28) -/
+def getCFast (db : DB) (i : Nat) : Option (List Int) := db.getD i none
+
+@[csimp] theorem getC_eq_getCFast : @getC = @getCFast := by
+  funext db i
+  unfold getC getCFast
+  rw [Array.getD_eq_getD_getElem?]
+  cases db[i]? <;> rfl
+
 def DBSound (s t n : Nat) (E : Edges) (db : DB) : Prop := ∀ i C, getC db i = some C → Sound s t n E C
 
 theorem push_sound {s t n : Nat} {E : Edges} {db : DB} {C : List Int} (hdb : DBSound s t n E db)
